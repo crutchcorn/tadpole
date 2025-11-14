@@ -4,7 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 
 const RootLayout = () => (
-  <>
+  <div className="font-awexbmp">
     <div className="p-2 flex gap-2">
       <Link to="/" className="[&.active]:font-bold">
         Home
@@ -26,7 +26,7 @@ const RootLayout = () => (
         },
       ]}
     />{" "}
-  </>
+  </div>
 );
 
 export const Route = createRootRoute({ component: RootLayout });
