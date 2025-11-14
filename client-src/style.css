@@ -8,3 +8,7 @@
 @theme {
   --font-awexbmp: "Awexbmp", sans-serif;
 }
+
+.pixelate {
+  image-rendering: pixelated;
+}
