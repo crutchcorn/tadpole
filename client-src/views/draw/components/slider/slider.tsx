@@ -13,12 +13,10 @@ interface SliderProps extends SliderOwnProps {
   value: number[]
   onPointerDown: () => void
   onPointerUp: () => void
-  onDoubleClick: () => void
   label?: string
 }
 
 export function Slider({
-  onDoubleClick,
   onPointerUp,
   onPointerDown,
   onValueChange,
@@ -38,7 +36,7 @@ export function Slider({
 
   return (
     <>
-      <Label.Root dir="ltr" htmlFor={props.name} onDoubleClick={onDoubleClick}>
+      <Label.Root dir="ltr" htmlFor={props.name}>
         {props.name}
       </Label.Root>
       <Root

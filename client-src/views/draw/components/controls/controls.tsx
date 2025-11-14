@@ -9,12 +9,10 @@ import { useControls, COLORS } from "./use-controls";
 
 export function Controls() {
   const {
-    isPanelOpen,
     handleSizeChangeStart,
     handleSizeChange,
     handleStrokeWidthChangeStart,
     handleStrokeWidthChange,
-    handleIsFilledChange,
     handleStyleChangeComplete,
     handleStrokeColorChange,
     handleFillColorChange,
@@ -23,7 +21,7 @@ export function Controls() {
 
   return (
     <div
-      className={[styles.container, isPanelOpen ? styles.open : ""].join(" ")}
+      className={styles.container}
     >
       <div className={styles.inputs}>
         <Slider
