@@ -12,7 +12,7 @@ function getMessageForClient(data: FromServerSocketMessage): string {
 
 // Multiple party servers
 export class Chat extends Server {
-  async onMessage(_connection: Connection, message: WSMessage): Promise<void> {
+  async onMessage(connection: Connection, message: WSMessage): Promise<void> {
     const data = JSON.parse(message.toString()) as FromClientSocketMessage;
 
     switch (data.type) {
@@ -33,6 +33,7 @@ export class Chat extends Server {
         this.broadcast(getMessageForClient({
           type: "svg_uploaded",
           hat,
+          userId: connection.id,
           frog,
           svgPath: `https://drawings.tadpole.social/${svgFileName}`,
         }));
@@ -44,6 +45,7 @@ export class Chat extends Server {
         this.broadcast(getMessageForClient({
           type: "frog_changed",
           hat: data.hat,
+          userId: connection.id,
           frog: data.frog,
         }));
         break;
