@@ -5,6 +5,9 @@ const UploadSVGSchema = z.object({
     svg: z.string(),
 });
 
+const RibbitSchema = z.object({ 
+  type: z.literal("ribbit"),
+  name: z.string()
 export const FrogSchema = z.union([
     z.literal("Frog1AP"),
     z.literal("Frog1BP"),
@@ -52,10 +55,16 @@ const ChangeFrogSchema = z.object({
 // The type of messages sent from the client to the server via WebSocket
 export const FromClientSocketMessageSchema = z.union([
     UploadSVGSchema,
+    RibbitSchema,
     ChangeFrogSchema,
 ]);
 
 export type FromClientSocketMessage = z.infer<typeof FromClientSocketMessageSchema>;
+
+const RibbitSentSchema = z.object({ 
+  type: z.literal("ribbit_sent"),
+  name: z.string()
+});
 
 const SVGUploadedSchema = z.object({
     type: z.literal("svg_uploaded"),
@@ -77,6 +86,7 @@ const FrogChangedSchema = z.object({
 // The type of messages sent from the server to the client via WebSocket
 export const FromServerSocketMessageSchema = z.union([
     SVGUploadedSchema,
+    RibbitSentSchema,
     FrogChangedSchema,
 ]);
 

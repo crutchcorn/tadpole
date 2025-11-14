@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
 import usePartySocket from "partysocket/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Frog, FromServerSocketMessage, Hat, SVGUploaded } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";

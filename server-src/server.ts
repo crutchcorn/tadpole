@@ -39,6 +39,13 @@ export class Chat extends Server {
         }));
         break;
       }
+      case "ribbit": {
+        this.broadcast(getMessageForClient({
+          type: "ribbit_sent",
+          name: data.name
+        }));
+        break;
+      }
       case "change-frog": {
         this.ctx.storage.put("hat", data.hat);
         this.ctx.storage.put("frog", data.frog);
