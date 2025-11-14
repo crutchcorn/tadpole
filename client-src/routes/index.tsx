@@ -42,14 +42,15 @@ function Index() {
   });
 
   return (
-    <div className="p-2 font-awexbmp">
-      <h3 className="">Welcome Home!</h3>
-      <ul>
+    <div className="p-2 font-awexbmp h-screen flex flex-col">
+      <ul className="flex-1 overflow-auto mb-0">
         {messages.map((message) => (
           <UserMessage name="frogboi" hat={HAT_MAP[userMap[message.userId]!.hat]!} frog={FROG_MAP[userMap[message.userId]!.frog]!} image={message.svgPath} />
         ))}
       </ul>
-      <UserToolbar />
+      <div className="sticky bottom-0">
+        <UserToolbar />
+      </div>
     </div>
   );
 }
