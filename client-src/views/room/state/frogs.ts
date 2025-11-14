@@ -11,4 +11,9 @@ export const FROG_MAP: Record<string, string | null> = FrogSchema.options.reduce
   return acc;
 }, {} as Record<string, string | null>);
 
+export const REVERSE_FROG_MAP: Record<string, string | null> = Object.entries(FROG_MAP).reduce((acc, [key, value]) => {
+  acc[value ?? ""] = key;
+  return acc;
+}, {} as Record<string, string | null>);
+
 export const FROGS = Object.values(FROG_MAP);

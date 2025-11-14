@@ -11,4 +11,9 @@ export const HAT_MAP: Record<string, string | null> = HatSchema.options.reduce((
   return acc;
 }, {} as Record<string, string | null>);
 
+export const REVERSE_HAT_MAP: Record<string, string | null> = Object.entries(HAT_MAP).reduce((acc, [key, value]) => {
+  acc[value ?? ""] = key;
+  return acc;
+}, {} as Record<string, string | null>);
+
 export const HATS = Object.values(HAT_MAP);

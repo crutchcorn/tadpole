@@ -2,8 +2,8 @@ import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Controls } from "../draw/components/controls";
 import { Editor } from "../draw/components/editor";
 import EditPencil from "/StreamlineFreehand-EditPencil.svg" with { type: "svg" };
-import { HATS } from "./state/hats";
-import { FROGS } from "./state/frogs";
+import { HATS, REVERSE_HAT_MAP } from "./state/hats";
+import { FROGS, REVERSE_FROG_MAP } from "./state/frogs";
 import { socketSend } from "../draw/services/socket";
 import { app } from "../draw/state";
 
@@ -73,10 +73,8 @@ function CustomizeFrogDialog({ dialogRef, frog, hat, onFrogComplete, onHatComple
   const [hatIndex, setHatIndex] = useState(HATS.findIndex((v) => v === hat));
   const [frogIndex, setFrogIndex] = useState(FROGS.findIndex((v) => v === frog));
 
-  useEffect(() => console.log({ hatIndex, HATS, hat }), [hat]);
-
-  const currentHat = useMemo(() => HATS[hatIndex], [hatIndex]);
-  const currentFrog = useMemo(() => FROGS[frogIndex], [frogIndex]);
+  const currentHat = useMemo(() => HATS[hatIndex]!, [hatIndex]);
+  const currentFrog = useMemo(() => FROGS[frogIndex]!, [frogIndex]);
 
   return (
     <dialog ref={dialogRef} className="bg-white absolute p-4">
@@ -104,6 +102,7 @@ function CustomizeFrogDialog({ dialogRef, frog, hat, onFrogComplete, onHatComple
       <button onClick={() => {
         onFrogComplete(currentFrog);
         onHatComplete(currentHat);
+        socketSend({ type: "change-frog", frog: REVERSE_FROG_MAP[currentFrog] as never, hat: REVERSE_HAT_MAP[currentHat] as never });
         dialogRef.current?.close();
       }}>
         Confirm

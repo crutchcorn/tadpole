@@ -64,6 +64,8 @@ const SVGUploadedSchema = z.object({
     svgPath: z.string(),
 });
 
+export type SVGUploaded = z.infer<typeof SVGUploadedSchema>;
+
 const FrogChangedSchema = z.object({
     type: z.literal("frog_changed"),
     hat: HatSchema,
