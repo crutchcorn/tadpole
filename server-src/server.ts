@@ -33,6 +33,12 @@ export class Chat extends Server {
         }));
         break;
       }
+      case "ribbit": {
+        this.broadcast(getMessageForClient({
+          type: "ribbit_sent",
+          name: data.name
+        }));
+      }
     }
   }
 }

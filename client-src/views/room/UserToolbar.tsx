@@ -11,10 +11,12 @@ export default function UserToolbar() {
   const [name, setName] = useState("frogboi");
   const [hat, setHat] = useState("/TopHatP.png");
   const [frog, setFrog] = useState("/Frog1AP.png");
+  const ribbitRef = useRef<HTMLAudioElement>(null);
   const customizeDialogRef = useRef<HTMLDialogElement>(null);
 
   return (
     <>
+      <audio ref={ribbitRef} src="/ribbit.mp3"></audio>
       <CustomizeFrogDialog 
         hat={hat}
         frog={frog}
@@ -48,12 +50,20 @@ export default function UserToolbar() {
         </div>
 
         <div className="font-bold text-green-800 flex flex-col justify-center gap-4 w-full max-w-50 h-auto text-4xl">
-          <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
+          <button 
             onClick={() => {
               socketSend({ svg: app.copySvg(), type: "upload-svg" });
-            }
-          }>Send</button>          
-          <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4">Ribbit</button>
+            }}
+            className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
+          >
+            Send
+          </button>          
+          <button 
+            onClick={() => { ribbitRef.current?.play(); socketSend({ type: "ribbit", name }) }}
+            className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
+          >
+            Ribbit
+          </button>
         </div>
       </menu>
     </>
@@ -71,8 +81,6 @@ type CustomizeFrogDialogProps = {
 function CustomizeFrogDialog({ dialogRef, frog, hat, onFrogComplete, onHatComplete }: CustomizeFrogDialogProps) {
   const [hatIndex, setHatIndex] = useState(HATS.findIndex((v) => v === hat));
   const [frogIndex, setFrogIndex] = useState(FROGS.findIndex((v) => v === frog));
-
-  useEffect(() => console.log({ hatIndex, HATS, hat }), [hat]);
 
   const currentHat = useMemo(() => HATS[hatIndex], [hatIndex]);
   const currentFrog = useMemo(() => FROGS[frogIndex], [frogIndex]);

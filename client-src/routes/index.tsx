@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
 import usePartySocket from "partysocket/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FromServerSocketMessage } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 
@@ -28,7 +28,6 @@ function Index() {
 
   return (
     <div className="p-2 font-awexbmp">
-      <h3 className="">Welcome Home!</h3>
       <ul> 
         {images.map((image, index) => (
           <UserMessage name="frogboi" hat="/BucketHatP.png" frog="Frog1AP.png" image={image} />
