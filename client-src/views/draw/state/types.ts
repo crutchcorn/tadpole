@@ -34,8 +34,8 @@ export interface Doc {
 
 export interface State extends Doc {
   appState: {
-    status: "idle" | "drawing" | "erasing";
-    tool: "drawing" | "erasing";
+    status: "idle" | "drawing";
+    tool: "drawing";
     editingId?: string;
     style: DrawStyles;
     isPanelOpen: boolean;

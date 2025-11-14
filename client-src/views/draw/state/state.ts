@@ -90,16 +90,6 @@ export class AppState extends StateManager<State> {
         this.createDrawingShape(info.point);
         break;
       }
-      case "erasing": {
-        this.setSnapshot();
-        this.patchState({
-          appState: {
-            status: "erasing",
-          },
-        });
-        this.erase(info.point);
-        break;
-      }
     }
   };
 
@@ -124,12 +114,6 @@ export class AppState extends StateManager<State> {
         }
         break;
       }
-      case "erasing": {
-        if (status === "erasing") {
-          this.erase(info.point);
-        }
-        break;
-      }
     }
   };
 
@@ -138,20 +122,6 @@ export class AppState extends StateManager<State> {
     switch (state.appState.tool) {
       case "drawing": {
         this.completeDrawingShape();
-        break;
-      }
-      case "erasing": {
-        this.setState({
-          before: this.snapshot,
-          after: {
-            appState: {
-              status: "idle",
-            },
-            page: {
-              shapes: this.state.page.shapes,
-            },
-          },
-        });
         break;
       }
     }
@@ -247,7 +217,7 @@ export class AppState extends StateManager<State> {
   completeDrawingShape = () => {
     const { state } = this;
     const { shapes } = state.page;
-    if (!state.appState.editingId) return this; // Don't erase while drawing
+    if (!state.appState.editingId) return this;
 
     let shape = shapes[state.appState.editingId];
 
@@ -299,8 +269,6 @@ export class AppState extends StateManager<State> {
   };
 
   replayShape = (points: number[][]) => {
-    this.eraseAll();
-
     const newShape = draw.create({
       id: Utils.uniqueId(),
       parentId: "page",
@@ -369,62 +337,7 @@ export class AppState extends StateManager<State> {
     return newShape;
   };
 
-  erase = (point: number[]) => {
-    const { state } = this;
-    const camera = state.pageState.camera;
-    const pt = Vec.sub(point, camera.point);
-    const { getBounds } = shapeUtils.draw;
 
-    return this.patchState({
-      page: {
-        shapes: {
-          ...Object.fromEntries(
-            Object.entries(state.page.shapes).map(([id, shape]) => {
-              const bounds = getBounds(shape);
-
-              if (Vec.dist(pt, shape.point) < 10) {
-                return [id, undefined];
-              }
-
-              if (Utils.pointInBounds(pt, bounds)) {
-                const points = draw.strokeCache.get(shape);
-
-                if (
-                  (points &&
-                    pointInPolygon(Vec.sub(pt, shape.point), points)) ||
-                  Vec.dist(pt, shape.point) < 10
-                ) {
-                  return [id, undefined];
-                }
-              }
-
-              return [id, shape];
-            }),
-          ),
-        },
-      },
-    });
-  };
-
-  eraseAll = () => {
-    const { state } = this;
-    const { shapes } = state.page;
-
-    if (state.appState.editingId) return this; // Don't erase while drawing
-
-    return this.setState({
-      before: {
-        page: {
-          shapes,
-        },
-      },
-      after: {
-        page: {
-          shapes: {},
-        },
-      },
-    });
-  };
 
   startStyleUpdate = () => {
     return this.setSnapshot();
@@ -701,14 +614,6 @@ export class AppState extends StateManager<State> {
     this.patchState({
       appState: {
         tool: "drawing",
-      },
-    });
-  };
-
-  selectErasingTool = () => {
-    this.patchState({
-      appState: {
-        tool: "erasing",
       },
     });
   };
