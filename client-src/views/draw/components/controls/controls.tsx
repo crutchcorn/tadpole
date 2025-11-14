@@ -1,78 +1,29 @@
-import * as React from 'react'
-import { Colors } from '../colors'
-import { Checkbox } from '../checkbox'
-import { Slider } from '../slider'
-import styles from './controls.module.css'
-import { app, useAppState } from '../../state'
-import type { State } from '../../state/state'
-
-const COLORS = [
-  '#000000',
-  '#ffc107',
-  '#ff5722',
-  '#e91e63',
-  '#673ab7',
-  '#00bcd4',
-  '#efefef',
-]
-
-const appStateSelector = (s: State) => s.appState
+import * as React from "react";
+import { Colors } from "../colors";
+import { Checkbox } from "../checkbox";
+import { Slider } from "../slider";
+import styles from "./controls.module.css";
+import { app, useAppState } from "../../state";
+import type { State } from "../../state/state";
+import { useControls, COLORS } from "./use-controls";
 
 export function Controls() {
-  const appState = useAppState(appStateSelector)
-  const { style } = appState
-
-  const handleSizeChangeStart = React.useCallback(() => {
-    app.setSnapshot()
-  }, [])
-
-  const handleSizeChange = React.useCallback((v: number[]) => {
-    app.patchStyle({ size: v[0] })
-  }, [])
-
-  const handleStrokeWidthChangeStart = React.useCallback(() => {
-    app.setSnapshot()
-  }, [])
-
-  const handleStrokeWidthChange = React.useCallback((v: number[]) => {
-    app.patchStyle({ strokeWidth: v[0] })
-  }, [])
-
-  const handleIsFilledChange = React.useCallback(
-    (v: boolean | 'indeterminate') => {
-      app.setNextStyleForAllShapes({ isFilled: !!v })
-    },
-    []
-  )
-
-  const handleStyleChangeComplete = React.useCallback(() => {
-    app.finishStyleUpdate()
-  }, [])
-
-  const handleStrokeColorChange = React.useCallback((color: string) => {
-    app.patchStyle({ stroke: color })
-  }, [])
-
-  const handleFillColorChange = React.useCallback((color: string) => {
-    app.patchStyle({ fill: color })
-  }, [])
-
-  // Resets
-
-  const handleResetSize = React.useCallback(() => {
-    app.resetStyle('size')
-  }, [])
-
-  const handleResetStrokeWidth = React.useCallback(() => {
-    app.resetStyle('strokeWidth')
-  }, [])
+  const {
+    isPanelOpen,
+    handleSizeChangeStart,
+    handleSizeChange,
+    handleStrokeWidthChangeStart,
+    handleStrokeWidthChange,
+    handleIsFilledChange,
+    handleStyleChangeComplete,
+    handleStrokeColorChange,
+    handleFillColorChange,
+    style,
+  } = useControls();
 
   return (
     <div
-      className={[
-        styles.container,
-        appState.isPanelOpen ? styles.open : '',
-      ].join(' ')}
+      className={[styles.container, isPanelOpen ? styles.open : ""].join(" ")}
     >
       <div className={styles.inputs}>
         <Slider
@@ -81,7 +32,6 @@ export function Controls() {
           min={1}
           max={100}
           step={1}
-          onDoubleClick={handleResetSize}
           onValueChange={handleSizeChange}
           onPointerDown={handleSizeChangeStart}
           onPointerUp={handleStyleChangeComplete}
@@ -98,7 +48,6 @@ export function Controls() {
           min={0}
           max={100}
           step={1}
-          onDoubleClick={handleResetStrokeWidth}
           onValueChange={handleStrokeWidthChange}
           onPointerDown={handleStrokeWidthChangeStart}
           onPointerUp={handleStyleChangeComplete}
@@ -112,6 +61,11 @@ export function Controls() {
           />
         )}
       </div>
+      <div style={{display: 'flex', gap: '1rem'}}>
+        <button onClick={app.undo}>Undo</button>
+        <button onClick={app.redo}>Redo</button>
+        <button onClick={app.resetDoc}>Clear</button>
+      </div>
     </div>
-  )
+  );
 }

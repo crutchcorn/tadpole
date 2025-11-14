@@ -1,17 +1,17 @@
-import * as React from 'react'
-import { Editor } from './components/editor'
-import { Controls } from './components/controls'
-import { Panel } from './components/panel'
-import { useKeyboardShortcuts } from './hooks'
+import * as React from "react";
+import { Editor } from "./components/editor";
+import { Controls } from "./components/controls";
+import { useKeyboardShortcuts } from "./hooks";
 
 export function DrawPage() {
-  useKeyboardShortcuts()
+  useKeyboardShortcuts();
 
   return (
-    <div className="app">
-      <Editor />
+    <div>
+      <div className={`w-full h-60`}>
+        <Editor />
+      </div>
       <Controls />
-      <Panel />
     </div>
-  )
+  );
 }
