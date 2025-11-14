@@ -4,7 +4,11 @@ import { Server } from "partyserver";
 
 import type { Connection, WSMessage } from "partyserver";
 
-import { FromClientSocketMessage } from "../isomophic-src/isomorphic";
+import { FromClientSocketMessage, FromServerSocketMessage } from "../isomophic-src/isomorphic";
+
+function getMessageForClient(data: FromServerSocketMessage): string {
+  return JSON.stringify(data);
+}
 
 // Multiple party servers
 export class Chat extends Server {
@@ -17,7 +21,7 @@ export class Chat extends Server {
 
         const val = await this.ctx.storage.get<string>("value");       
 
-        this.broadcast(JSON.stringify({
+        this.broadcast(getMessageForClient({
           type: "acknowledge",
           message: `SVG received and stored with value: ${val}`,
         }));
