@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2 font-awexbmp">
+    <div className="relative w-full h-full p-2 font-awexbmp">
       <h3 className="">Welcome Home!</h3>
       <UserToolbar />
     </div>

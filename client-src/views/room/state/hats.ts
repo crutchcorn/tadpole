@@ -1,0 +1,15 @@
+export const HATS = [
+  "",
+  '/CrownGoldP.png',
+  '/CrownSilverP.png',
+  '/CrownLordOfFliesP.png',
+  '/FliesHatP.png',
+  '/PaperHatP.png',
+  '/PrincessHatP.png',
+  '/PropellorHatP.png',
+  '/TopHatP.png',
+  '/UmbrellaHatP.png',
+  '/WizardHatP.png',
+  '/BucketHatP.png',
+  '/FroggyHatP.png',
+];
