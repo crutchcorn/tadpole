@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Colors } from 'components/colors'
-import { Checkbox } from 'components/checkbox'
-import { Slider } from 'components/slider'
+import { Colors } from '../colors'
+import { Checkbox } from '../checkbox'
+import { Slider } from '../slider'
 import styles from './controls.module.css'
-import { app, useAppState } from 'state'
-import type { State } from 'types'
+import { app, useAppState } from '../../state'
+import type { State } from '../../state/state'
 
 const COLORS = [
   '#000000',

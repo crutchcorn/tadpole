@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './panel.module.css'
-import { app, useAppState } from 'state'
+import { app, useAppState } from '../../state'
 import { GitHubLogoIcon, HamburgerMenuIcon } from '@radix-ui/react-icons'
 
 export function Panel() {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { app } from 'state'
+import { app } from '../state'
 
 export function useKeyboardShortcuts() {
   useHotkeys('command+z,ctrl+z', () => {

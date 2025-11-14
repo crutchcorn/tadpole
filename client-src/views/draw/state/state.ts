@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { Doc, DrawShape, DrawStyles, State } from 'types'
+import type { Doc, DrawShape, DrawStyles, State } from './types'
 import {
   TLPinchEventHandler,
   TLPointerEventHandler,

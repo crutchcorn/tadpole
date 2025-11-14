@@ -12,8 +12,8 @@ import {
 } from '@tldraw/intersect'
 import { Vec } from '@tldraw/vec'
 import { getStroke } from 'perfect-freehand'
-import type { DrawShape } from '../../types'
-import { EASINGS } from 'state/easings'
+import type { DrawShape } from '../types'
+import { EASINGS } from '../easings'
 
 type T = DrawShape
 type E = SVGSVGElement

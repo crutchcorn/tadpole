@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Renderer } from '@tldraw/core'
-import { app, useAppState } from 'state'
+import { app, useAppState } from '../../state'
 import styles from './editor.module.css'
 
 export function Editor(): JSX.Element {
