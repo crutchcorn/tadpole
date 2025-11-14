@@ -15,7 +15,7 @@ export default function UserToolbar() {
 
   return (
     <>
-      <CustomizeFrogDialog 
+      <CustomizeFrogDialog
         hat={hat}
         frog={frog}
         dialogRef={customizeDialogRef}
@@ -28,17 +28,17 @@ export default function UserToolbar() {
             <img src={hat} className="absolute top-0 left-17 w-16" />
             <img src={frog} className="" />
           </span>
-          <input 
-            name="name" 
-            type="text" 
+          <input
+            name="name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
-            className="text-lg text-center w-fit border-2 border-green-800 bg-white font-bold rounded pl-2" 
+            className="text-lg text-center w-fit border-2 border-green-800 bg-white font-bold rounded pl-2"
           />
           <button onClick={() => customizeDialogRef.current?.showModal()} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
-            <img src={EditPencil} className="group-hover:text-green-300"/> 
+            <img src={EditPencil} className="group-hover:text-green-300" />
           </button>
-        </div> 
+        </div>
 
         <div className="w-full max-w-1/6 h-auto border rounded bg-green-500/30">
           <Controls />
@@ -51,8 +51,9 @@ export default function UserToolbar() {
           <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
             onClick={() => {
               socketSend({ svg: app.copySvg(), type: "upload-svg" });
+              app.resetDoc();
             }
-          }>Send</button>          
+            }>Send</button>
           <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4">Ribbit</button>
         </div>
       </menu>
@@ -80,29 +81,29 @@ function CustomizeFrogDialog({ dialogRef, frog, hat, onFrogComplete, onHatComple
   return (
     <dialog ref={dialogRef} className="bg-white absolute p-4">
       <div className="flex justify-between items-center">
-        <button onClick={() => hatIndex === 0 ? setHatIndex(HATS.length - 1) : setHatIndex(hatIndex-1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
-          <img src={EditPencil} className="group-hover:text-green-300"/> 
+        <button onClick={() => hatIndex === 0 ? setHatIndex(HATS.length - 1) : setHatIndex(hatIndex - 1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
+          <img src={EditPencil} className="group-hover:text-green-300" />
         </button>
         <img src={currentHat} className="" />
         <button onClick={() => hatIndex === HATS.length ? setHatIndex(0) : setHatIndex(hatIndex + 1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
-          <img src={EditPencil} className="group-hover:text-green-300"/> 
+          <img src={EditPencil} className="group-hover:text-green-300" />
         </button>
       </div>
 
       <div className="flex justify-between items-center">
-        <button onClick={() => frogIndex === 0 ? setFrogIndex(HATS.length - 1) : setFrogIndex(frogIndex-1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
-          <img src={EditPencil} className="group-hover:text-green-300"/> 
+        <button onClick={() => frogIndex === 0 ? setFrogIndex(HATS.length - 1) : setFrogIndex(frogIndex - 1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
+          <img src={EditPencil} className="group-hover:text-green-300" />
         </button>
         <img src={currentFrog} className="" />
         <button onClick={() => frogIndex === HATS.length ? setFrogIndex(0) : setFrogIndex(frogIndex + 1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
-          <img src={EditPencil} className="group-hover:text-green-300"/> 
+          <img src={EditPencil} className="group-hover:text-green-300" />
         </button>
 
       </div>
 
-      <button onClick={() => { 
-        onFrogComplete(currentFrog); 
-        onHatComplete(currentHat); 
+      <button onClick={() => {
+        onFrogComplete(currentFrog);
+        onHatComplete(currentHat);
         dialogRef.current?.close();
       }}>
         Confirm

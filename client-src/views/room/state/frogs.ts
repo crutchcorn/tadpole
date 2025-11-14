@@ -1,17 +1,14 @@
-export const FROGS = [
-  "/Frog1AP.png",
-  "/Frog1BP.png",
-  "/Frog1CP.png",
-  "/Frog2AP.png",
-  "/Frog2BP.png",
-  "/Frog2CP.png",
-  "/Frog3AP.png",
-  "/Frog3BP.png",
-  "/Frog3CP.png",
-  "/Frog4AP.png",
-  "/Frog4BP.png",
-  "/Frog4CP.png",
-  "/Frog5AP.png",
-  "/Frog5BP.png",
-  "/Frog5CP.png",
-];
+import {FrogSchema} from "../../../../isomophic-src/isomorphic"
+
+export const FROG_MAP: Record<string, string | null> = FrogSchema.options.reduce((acc, frog) => {
+  const val = frog.value;
+  if (!val) {
+    acc[val] = val;
+  } else {
+    // This is hacky :)
+    acc[val] = `/${val}.png`;
+  }
+  return acc;
+}, {} as Record<string, string | null>);
+
+export const FROGS = Object.values(FROG_MAP);
