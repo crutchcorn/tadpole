@@ -6,7 +6,5 @@ export const Route = createFileRoute("/draw")({
 });
 
 function Index() {
-  return (
-    <DrawPage />
-  );
+  return <DrawPage />;
 }

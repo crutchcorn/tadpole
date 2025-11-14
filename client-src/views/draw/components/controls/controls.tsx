@@ -20,9 +20,7 @@ export function Controls() {
   } = useControls();
 
   return (
-    <div
-      className={styles.container}
-    >
+    <div className={styles.container}>
       <div className={styles.inputs}>
         <Slider
           name="Size"
@@ -59,7 +57,7 @@ export function Controls() {
           />
         )}
       </div>
-      <div style={{display: 'flex', gap: '1rem'}}>
+      <div style={{ display: "flex", gap: "1rem" }}>
         <button onClick={app.undo}>Undo</button>
         <button onClick={app.redo}>Redo</button>
         <button onClick={app.resetDoc}>Clear</button>

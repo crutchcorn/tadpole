@@ -43,7 +43,7 @@
 
 .thumbBall::after {
   display: block;
-  content: '';
+  content: "";
   width: 12px;
   height: 12px;
   border-radius: 100%;

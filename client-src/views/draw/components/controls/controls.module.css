@@ -27,7 +27,7 @@ hr {
 .rowButton {
   cursor: pointer;
   flex-grow: 2;
-  font-family: 'Recursive', sans-serif;
+  font-family: "Recursive", sans-serif;
   border: none;
   background-color: transparent;
   border: 2px solid transparent;

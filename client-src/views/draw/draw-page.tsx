@@ -7,8 +7,13 @@ export function DrawPage() {
   useKeyboardShortcuts();
 
   return (
-    <div className="w-full" style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
-      <div style={{ width: "fit-content" }}><Controls /></div>
+    <div
+      className="w-full"
+      style={{ display: "flex", flexDirection: "row", gap: "1rem" }}
+    >
+      <div style={{ width: "fit-content" }}>
+        <Controls />
+      </div>
       <div className={`h-60 flex-grow`}>
         <Editor />
       </div>

@@ -1,1 +1,1 @@
-export * from './useKeyboardShortcuts'
+export * from "./useKeyboardShortcuts";
