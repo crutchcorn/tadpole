@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Awexbmp";
+  src: url("/Awexbmp.ttf");
+}
+
+@theme {
+  --font-awexbmp: "Awexbmp", sans-serif;
+}
+
