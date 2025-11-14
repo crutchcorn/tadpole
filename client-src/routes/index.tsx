@@ -3,6 +3,7 @@ import UserToolbar from "../views/room/UserToolbar";
 import usePartySocket from "partysocket/react";
 import { useState } from "react";
 import { FromServerSocketMessage } from "../../isomophic-src/isomorphic";
+import UserMessage from "../views/room/UserMessage";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -26,13 +27,11 @@ function Index() {
   });
 
   return (
-    <div className="relative w-full h-full p-2 font-awexbmp">
+    <div className="p-2 font-awexbmp">
       <h3 className="">Welcome Home!</h3>
-      <ul>
+      <ul> 
         {images.map((image, index) => (
-          <li key={index}>
-            <img src={image} alt={`Uploaded drawing ${index + 1}`} />
-          </li>
+          <UserMessage name="frogboi" hat="/BucketHatP.png" frog="Frog1AP.png" image={image} />
         ))}
       </ul>
       <UserToolbar />
