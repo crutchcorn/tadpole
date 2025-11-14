@@ -2,7 +2,9 @@ name = "tadpole"
 main = "server-src/server.ts"
 compatibility_date = "2025-11-05"
 
-assets = {directory = "./public"}
+[assets]
+directory = "./public"
+not_found_handling = "single-page-application"
 
 [[durable_objects.bindings]]
 name = "Chat"
@@ -10,4 +12,4 @@ class_name = "Chat"
 
 [[migrations]]
 tag = "v1" # Should be unique for each entry
-new_classes = ["Chat"]
+new_sqlite_classes = ["Chat"]
