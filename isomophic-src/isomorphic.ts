@@ -12,10 +12,14 @@ export const FromClientSocketMessageSchema = z.union([
 
 export type FromClientSocketMessage = z.infer<typeof FromClientSocketMessageSchema>;
 
-// The type of messages sent from the server to the client via WebSocket
-export const FromServerSocketMessageSchema = z.object({
-    type: z.literal("acknowledge"),
-    message: z.string(),
+const SVGUploadedSchema = z.object({
+    type: z.literal("svg_uploaded"),
+    svgPath: z.string(),
 });
+
+// The type of messages sent from the server to the client via WebSocket
+export const FromServerSocketMessageSchema = z.union([
+    SVGUploadedSchema,
+]);
 
 export type FromServerSocketMessage = z.infer<typeof FromServerSocketMessageSchema>;

@@ -13,3 +13,8 @@ class_name = "Chat"
 [[migrations]]
 tag = "v1" # Should be unique for each entry
 new_sqlite_classes = ["Chat"]
+
+[[r2_buckets]]
+binding = 'DRAWINGS_BUCKET' # <~ valid JavaScript variable name
+bucket_name = 'drawings'
+remote = true

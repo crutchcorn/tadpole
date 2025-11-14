@@ -17,13 +17,19 @@ export class Chat extends Server {
 
     switch (data.type) {
       case "upload-svg": {
-        await this.ctx.storage.put("value", '123');
+        const svgContent = data.svg;
 
-        const val = await this.ctx.storage.get<string>("value");       
+        const svgFileName = `drawing-${crypto.randomUUID()}.svg`;
+
+        await (this.env as Cloudflare.Env).DRAWINGS_BUCKET.put(svgFileName, svgContent, {
+          httpMetadata: {
+            contentType: "image/svg+xml",
+          },
+        });
 
         this.broadcast(getMessageForClient({
-          type: "acknowledge",
-          message: `SVG received and stored with value: ${val}`,
+          type: "svg_uploaded",
+          svgPath: `https://drawings.tadpole.social/${svgFileName}`,
         }));
         break;
       }
