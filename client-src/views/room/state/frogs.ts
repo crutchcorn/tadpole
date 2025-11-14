@@ -1,0 +1,17 @@
+export const FROGS = [
+  "/Frog1AP.png",
+  "/Frog1BP.png",
+  "/Frog1CP.png",
+  "/Frog2AP.png",
+  "/Frog2BP.png",
+  "/Frog2CP.png",
+  "/Frog3AP.png",
+  "/Frog3BP.png",
+  "/Frog3CP.png",
+  "/Frog4AP.png",
+  "/Frog4BP.png",
+  "/Frog4CP.png",
+  "/Frog5AP.png",
+  "/Frog5BP.png",
+  "/Frog5CP.png",
+];
