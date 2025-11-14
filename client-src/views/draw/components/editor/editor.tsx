@@ -5,10 +5,6 @@ import styles from "./editor.module.css";
 
 export function Editor(): JSX.Element {
   const {
-    onPinch,
-    onPinchStart,
-    onPinchEnd,
-    onPan,
     onPointerDown,
     onPointerMove,
     onPointerUp,
@@ -30,10 +26,6 @@ export function Editor(): JSX.Element {
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-      onPinch={onPinch}
-      onPinchStart={onPinchStart}
-      onPinchEnd={onPinchEnd}
-      onPan={onPan}
     />
   );
 }

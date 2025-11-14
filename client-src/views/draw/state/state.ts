@@ -1,10 +1,8 @@
 import * as React from "react";
 import type { Doc, DrawShape, DrawStyles, State } from "./types";
 import {
-  TLPinchEventHandler,
   TLPointerEventHandler,
   TLShapeUtilsMap,
-  TLWheelEventHandler,
   Utils,
 } from "@tldraw/core";
 import { Vec } from "@tldraw/vec";
@@ -29,7 +27,6 @@ export const initialDoc: Doc = {
     selectedIds: [],
     camera: {
       point: [0, 0],
-      zoom: 1,
     },
   },
 };
@@ -160,85 +157,6 @@ export class AppState extends StateManager<State> {
     }
   };
 
-  pinchZoom = (point: number[], delta: number[], zoom: number): this => {
-    const { camera } = this.state.pageState;
-    const nextPoint = Vec.sub(camera.point, Vec.div(delta, camera.zoom));
-    const nextZoom = zoom;
-    const p0 = Vec.sub(Vec.div(point, camera.zoom), nextPoint);
-    const p1 = Vec.sub(Vec.div(point, nextZoom), nextPoint);
-
-    return this.patchState({
-      pageState: {
-        camera: {
-          point: Vec.round(Vec.add(nextPoint, Vec.sub(p1, p0))),
-          zoom: nextZoom,
-        },
-      },
-    });
-  };
-
-  onPinchEnd: TLPinchEventHandler = () => {
-    this.patchState({
-      appState: { status: "idle" },
-    });
-  };
-
-  onPinch: TLPinchEventHandler = (info, e) => {
-    if (this.state.appState.status !== "pinching") return;
-    this.pinchZoom(info.point, info.delta, info.delta[2]);
-    this.onPointerMove?.(info, e as unknown as React.PointerEvent);
-  };
-
-  onPan: TLWheelEventHandler = (info) => {
-    const { state } = this;
-    if (state.appState.status === "pinching") return this;
-
-    const { camera } = state.pageState;
-    const delta = Vec.div(info.delta, camera.zoom);
-    const prev = camera.point;
-    const next = Vec.sub(prev, delta);
-
-    if (Vec.isEqual(next, prev)) return this;
-
-    const point = Vec.round(next);
-
-    if (state.appState.editingId && state.appState.status === "drawing") {
-      const shape = state.page.shapes[state.appState.editingId];
-      const nextShape = this.updateDrawingShape(info.point, info.pressure);
-
-      this.patchState({
-        pageState: {
-          camera: {
-            point,
-          },
-        },
-        page: {
-          shapes: {
-            [shape.id]: nextShape,
-          },
-        },
-      });
-
-      if (nextShape) {
-        this.patchState({
-          page: {
-            shapes: {
-              [nextShape.id]: nextShape,
-            },
-          },
-        });
-      }
-    }
-
-    return this.patchState({
-      pageState: {
-        camera: {
-          point,
-        },
-      },
-    });
-  };
-
   /* --------------------- Methods -------------------- */
 
   togglePanelOpen = () => {
@@ -255,7 +173,7 @@ export class AppState extends StateManager<State> {
 
     const camera = state.pageState.camera;
 
-    const pt = Vec.sub(Vec.div(point, camera.zoom), camera.point);
+    const pt = Vec.sub(point, camera.point);
 
     const shape = draw.create({
       id: Utils.uniqueId(),
@@ -291,7 +209,7 @@ export class AppState extends StateManager<State> {
 
     const newPoint = [
       ...Vec.sub(
-        Vec.round(Vec.sub(Vec.div(point, camera.zoom), camera.point)),
+        Vec.round(Vec.sub(point, camera.point)),
         shape.point,
       ),
       pressure,
@@ -375,7 +293,6 @@ export class AppState extends StateManager<State> {
             window.innerWidth / 2 - bounds.width / 2,
             window.innerHeight / 2 - bounds.height / 2,
           ]),
-          zoom: 1,
         },
       },
     });
@@ -455,7 +372,7 @@ export class AppState extends StateManager<State> {
   erase = (point: number[]) => {
     const { state } = this;
     const camera = state.pageState.camera;
-    const pt = Vec.sub(Vec.div(point, camera.zoom), camera.point);
+    const pt = Vec.sub(point, camera.point);
     const { getBounds } = shapeUtils.draw;
 
     return this.patchState({
@@ -642,35 +559,6 @@ export class AppState extends StateManager<State> {
     });
   };
 
-  zoomToContent = (): this => {
-    const shapes = Object.values(this.state.page.shapes);
-    const pageState = this.state.pageState;
-
-    if (shapes.length === 0) {
-      this.patchState({
-        pageState: {
-          camera: {
-            zoom: 1,
-            point: [0, 0],
-          },
-        },
-      });
-    }
-
-    const bounds = Utils.getCommonBounds(
-      Object.values(shapes).map(shapeUtils.draw.getBounds),
-    );
-
-    const { zoom } = pageState.camera;
-    const mx = (window.innerWidth - bounds.width * zoom) / 2 / zoom;
-    const my = (window.innerHeight - bounds.height * zoom) / 2 / zoom;
-    const point = Vec.round(Vec.add([-bounds.minX, -bounds.minY], [mx, my]));
-
-    return this.patchState({
-      pageState: { camera: { point } },
-    });
-  };
-
   resetStyles = () => {
     const { shapes } = this.state.page;
     const { state } = this;
@@ -704,11 +592,6 @@ export class AppState extends StateManager<State> {
                 { style: initialAppState.style },
               ]),
             ),
-          },
-        },
-        pageState: {
-          camera: {
-            zoom: 1,
           },
         },
       },
@@ -808,18 +691,9 @@ export class AppState extends StateManager<State> {
         pageState: {
           camera: {
             point: [0, 0],
-            zoom: 1,
           },
         },
       },
-    });
-  };
-
-  onPinchStart: TLPinchEventHandler = () => {
-    if (this.state.appState.status !== "idle") return;
-
-    this.patchState({
-      appState: { status: "pinching" },
     });
   };
 
