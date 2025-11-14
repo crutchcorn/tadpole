@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "gen:wrangler:types": "wrangler types"
   },
   "dependencies": {
     "@modulz/radix-icons": "^4.0.0",
@@ -32,6 +33,7 @@
     "react-hotkeys-hook": "^3.4.0",
     "rko": "^0.5.25",
     "tailwindcss": "^4.1.17",
+    "zod": "^4.1.12",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {

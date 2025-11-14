@@ -4,6 +4,8 @@ import { Editor } from "../draw/components/editor";
 import EditPencil from "/StreamlineFreehand-EditPencil.svg" with { type: "svg" };
 import { HATS } from "./state/hats";
 import { FROGS } from "./state/frogs";
+import { socketSend } from "../draw/services/socket";
+import { app } from "../draw/state";
 
 export default function UserToolbar() {
   const [name, setName] = useState("frogboi");
@@ -46,7 +48,11 @@ export default function UserToolbar() {
         </div>
 
         <div className="font-bold text-green-800 flex flex-col justify-center gap-4 w-full max-w-50 h-auto text-4xl">
-          <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4">Send</button>
+          <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
+            onClick={() => {
+              socketSend({ svg: app.copySvg(), type: "upload-svg" });
+            }
+          }>Send</button>          
           <button className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4">Ribbit</button>
         </div>
       </menu>
@@ -91,6 +97,7 @@ function CustomizeFrogDialog({ dialogRef, frog, hat, onFrogComplete, onHatComple
         <button onClick={() => frogIndex === HATS.length ? setFrogIndex(0) : setFrogIndex(frogIndex + 1)} className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full">
           <img src={EditPencil} className="group-hover:text-green-300"/> 
         </button>
+
       </div>
 
       <button onClick={() => { 

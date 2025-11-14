@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES2023",
     "lib": ["ES2023"],
-    "types": ["node"],
+    "types": ["node", "./worker-configuration.d.ts"],
+
     "module": "ESNext",
     "skipLibCheck": true,
 
