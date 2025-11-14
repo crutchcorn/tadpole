@@ -2,10 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { devtools } from "@tanstack/devtools-vite";
 
 export default defineConfig({
   plugins: [
-    // cloudflare(),
+    devtools(),
+    cloudflare(),
     tanstackRouter({
       generatedRouteTree: "client-src/routeTree.gen.ts",
       routesDirectory: "client-src/routes",
