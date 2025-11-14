@@ -112,21 +112,6 @@ export function Controls() {
           />
         )}
       </div>
-      <hr />
-      <div className={styles.buttonsRow}>
-        <button className={styles.rowButton} onClick={app.resetStyles}>
-          Reset Options
-        </button>
-        <button className={styles.rowButton} onClick={app.copyStyles}>
-          Copy Options
-        </button>
-      </div>
-      <hr />
-      <div className={styles.buttonsRow}>
-        <button className={styles.rowButton} onClick={app.copySvg}>
-          Copy to SVG
-        </button>
-      </div>
     </div>
   )
 }
