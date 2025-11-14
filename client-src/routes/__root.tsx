@@ -4,7 +4,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 
 const RootLayout = () => (
-  <div className="font-awexbmp">
+  <div className={`font-awexbmp bg-[url(/FrogBackgroundP.png)] bg-cover bg-center bg-no-repeat w-vw h-dvh`}>
     <div className="p-2 flex gap-2">
       <Link to="/" className="[&.active]:font-bold">
         Home

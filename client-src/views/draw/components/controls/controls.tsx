@@ -20,8 +20,7 @@ export function Controls() {
   } = useControls();
 
   return (
-    <div className={styles.container}>
-      <div className={styles.inputs}>
+    <div className={"flex flex-col gap-1 p-3 justify-center"}>
         <Slider
           name="Size"
           value={[style.size]}
@@ -44,23 +43,21 @@ export function Controls() {
           min={0}
           max={100}
           step={1}
+          defaultValue={[2]}
           onValueChange={handleStrokeWidthChange}
           onPointerDown={handleStrokeWidthChangeStart}
           onPointerUp={handleStyleChangeComplete}
         />
-        {style.strokeWidth > 0 && (
-          <Colors
-            name=""
-            color={style.stroke}
-            colors={COLORS}
-            onChange={handleStrokeColorChange}
-          />
-        )}
-      </div>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <button onClick={app.undo}>Undo</button>
-        <button onClick={app.redo}>Redo</button>
-        <button onClick={app.resetDoc}>Clear</button>
+        <Colors
+          name=""
+          color={style.stroke}
+          colors={COLORS}
+          onChange={handleStrokeColorChange}
+        />
+      <div className="flex gap-2 items-center justify-center">
+        <button onClick={app.undo} className="border-2 border-green-800 rounded hover:text-green-300 hover:bg-green-600 px-2 py-1 bg-green-400 text-green-800">Undo</button>
+        <button onClick={app.redo} className="border-2 border-green-800 rounded hover:text-green-300 hover:bg-green-600 px-2 py-1 bg-green-400 text-green-800">Redo</button>
+        <button onClick={app.resetDoc} className="border-2 border-green-800 rounded hover:text-green-300 hover:bg-green-600 px-2 py-1 bg-green-400 text-green-800">Clear</button>
       </div>
     </div>
   );

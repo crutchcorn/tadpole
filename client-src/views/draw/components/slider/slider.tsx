@@ -36,8 +36,17 @@ export function Slider({
 
   return (
     <>
-      <Label.Root dir="ltr" htmlFor={props.name}>
+      <Label.Root dir="ltr" htmlFor={props.name} className="flex justify-between">
         {props.name}
+        <input
+          className={"border rounded pl-1.5"}
+          type="number"
+          value={value[0]}
+          min={min}
+          max={max}
+          step={step}
+          onChange={handleValueChange}
+        />
       </Label.Root>
       <Root
         {...props}
@@ -60,19 +69,6 @@ export function Slider({
           </Thumb>
         ))}
       </Root>
-      {label ? (
-        <span style={{ textAlign: "right" }}>{label}</span>
-      ) : (
-        <input
-          className={styles.numberInput}
-          type="number"
-          value={value[0]}
-          min={min}
-          max={max}
-          step={step}
-          onChange={handleValueChange}
-        />
-      )}
     </>
   );
 }

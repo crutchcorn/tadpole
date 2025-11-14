@@ -13,7 +13,7 @@ export function Colors(props: ColorsProps) {
   return (
     <>
       <Label.Root htmlFor={props.name}>{props.name}</Label.Root>
-      <div className={styles.grid}>
+      <div className="grid grid-cols-3">
         {props.colors.map((color) => {
           return (
             <button
