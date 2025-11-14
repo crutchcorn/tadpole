@@ -16,6 +16,6 @@ export default defineConfig({
       autoCodeSplitting: true,
     }),
     react(),
-    tailwindcss()
+    tailwindcss(),
   ],
 });

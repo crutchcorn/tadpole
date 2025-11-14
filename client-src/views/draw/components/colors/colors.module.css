@@ -9,6 +9,7 @@
   flex-grow: 2;
   border: none;
   height: 24px;
+  min-width: 40px;
   width: 100%;
   padding: none;
 }

@@ -1,24 +1,22 @@
-import * as React from 'react'
-import * as Label from '@radix-ui/react-label'
+import * as React from "react";
+import * as Label from "@radix-ui/react-label";
 import {
   Root,
   Track,
   Range,
   Thumb,
   SliderProps as SliderOwnProps,
-} from '@radix-ui/react-slider'
-import styles from './slider.module.css'
+} from "@radix-ui/react-slider";
+import styles from "./slider.module.css";
 
 interface SliderProps extends SliderOwnProps {
-  value: number[]
-  onPointerDown: () => void
-  onPointerUp: () => void
-  onDoubleClick: () => void
-  label?: string
+  value: number[];
+  onPointerDown: () => void;
+  onPointerUp: () => void;
+  label?: string;
 }
 
 export function Slider({
-  onDoubleClick,
   onPointerUp,
   onPointerDown,
   onValueChange,
@@ -31,14 +29,14 @@ export function Slider({
 }: SliderProps) {
   const handleValueChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      onValueChange?.([+e.currentTarget.value])
+      onValueChange?.([+e.currentTarget.value]);
     },
-    [onValueChange]
-  )
+    [onValueChange],
+  );
 
   return (
     <>
-      <Label.Root dir="ltr" htmlFor={props.name} onDoubleClick={onDoubleClick}>
+      <Label.Root dir="ltr" htmlFor={props.name}>
         {props.name}
       </Label.Root>
       <Root
@@ -63,7 +61,7 @@ export function Slider({
         ))}
       </Root>
       {label ? (
-        <span style={{ textAlign: 'right' }}>{label}</span>
+        <span style={{ textAlign: "right" }}>{label}</span>
       ) : (
         <input
           className={styles.numberInput}
@@ -76,5 +74,5 @@ export function Slider({
         />
       )}
     </>
-  )
+  );
 }

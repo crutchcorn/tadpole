@@ -1,10 +1,6 @@
 import * as React from "react";
-import { Colors } from "../colors";
-import { Checkbox } from "../checkbox";
-import { Slider } from "../slider";
-import styles from "./controls.module.css";
 import { app, useAppState } from "../../state";
-import type { State } from "../../state/state";
+import type { State } from "../../state/types";
 
 export const COLORS = [
   "#000000",
@@ -38,13 +34,6 @@ export function useControls() {
     app.patchStyle({ strokeWidth: v[0] });
   }, []);
 
-  const handleIsFilledChange = React.useCallback(
-    (v: boolean | "indeterminate") => {
-      app.setNextStyleForAllShapes({ isFilled: !!v });
-    },
-    [],
-  );
-
   const handleStyleChangeComplete = React.useCallback(() => {
     app.finishStyleUpdate();
   }, []);
@@ -58,12 +47,10 @@ export function useControls() {
   }, []);
 
   return {
-    isPanelOpen: appState.isPanelOpen,
     handleSizeChangeStart,
     handleSizeChange,
     handleStrokeWidthChangeStart,
     handleStrokeWidthChange,
-    handleIsFilledChange,
     handleStyleChangeComplete,
     handleStrokeColorChange,
     handleFillColorChange,

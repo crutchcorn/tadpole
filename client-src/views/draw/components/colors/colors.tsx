@@ -1,12 +1,12 @@
-import * as React from 'react'
-import * as Label from '@radix-ui/react-label'
-import styles from './colors.module.css'
+import * as React from "react";
+import * as Label from "@radix-ui/react-label";
+import styles from "./colors.module.css";
 
 interface ColorsProps {
-  name: string
-  colors: string[]
-  color: string
-  onChange: (color: string) => void
+  name: string;
+  colors: string[];
+  color: string;
+  onChange: (color: string) => void;
 }
 
 export function Colors(props: ColorsProps) {
@@ -20,7 +20,7 @@ export function Colors(props: ColorsProps) {
               key={color}
               className={
                 color === props.color
-                  ? [styles.color, styles.selected].join(' ')
+                  ? [styles.color, styles.selected].join(" ")
                   : styles.color
               }
               style={{
@@ -28,9 +28,9 @@ export function Colors(props: ColorsProps) {
               }}
               onClick={() => props.onChange(color)}
             />
-          )
+          );
         })}
       </div>
     </>
-  )
+  );
 }

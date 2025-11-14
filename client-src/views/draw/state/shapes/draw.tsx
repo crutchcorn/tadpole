@@ -1,39 +1,39 @@
-import * as React from 'react'
+import * as React from "react";
 import {
   TLBounds,
   Utils,
   TLTransformInfo,
   TLShapeUtil,
   SVGContainer,
-} from '@tldraw/core'
+} from "@tldraw/core";
 import {
   intersectBoundsBounds,
   intersectBoundsPolyline,
-} from '@tldraw/intersect'
-import { Vec } from '@tldraw/vec'
-import { getStroke } from 'perfect-freehand'
-import type { DrawShape } from '../types'
-import { EASINGS } from '../easings'
+} from "@tldraw/intersect";
+import { Vec } from "@tldraw/vec";
+import { getStroke } from "perfect-freehand";
+import type { DrawShape } from "../types";
+import { EASINGS } from "../easings";
 
-type T = DrawShape
-type E = SVGSVGElement
+type T = DrawShape;
+type E = SVGSVGElement;
 
 export class DrawUtil extends TLShapeUtil<T, E> {
-  type = 'draw' as const
+  type = "draw" as const;
 
-  pointsBoundsCache = new WeakMap<T['points'], TLBounds>([])
+  pointsBoundsCache = new WeakMap<T["points"], TLBounds>([]);
 
-  rotatedCache = new WeakMap<T, number[][]>([])
+  rotatedCache = new WeakMap<T, number[][]>([]);
 
-  strokeCache = new WeakMap<T, number[][]>([])
+  strokeCache = new WeakMap<T, number[][]>([]);
 
   getShape = (props: Partial<T>): T => {
     return Utils.deepMerge<T>(
       {
-        id: 'id',
-        type: 'draw',
-        name: 'Draw',
-        parentId: 'page',
+        id: "id",
+        type: "draw",
+        name: "Draw",
+        parentId: "page",
         childIndex: 1,
         point: [0, 0],
         points: [[0, 0, 0.5]],
@@ -45,21 +45,21 @@ export class DrawUtil extends TLShapeUtil<T, E> {
           thinning: 0.75,
           streamline: 0.5,
           smoothing: 0.5,
-          easing: 'linear',
+          easing: "linear",
           taperStart: 0,
           taperEnd: 0,
           capStart: true,
           capEnd: true,
-          easingStart: 'linear',
-          easingEnd: 'linear',
+          easingStart: "linear",
+          easingEnd: "linear",
           isFilled: true,
-          stroke: 'black',
-          fill: 'black',
+          stroke: "black",
+          fill: "black",
         },
       },
-      props
-    )
-  }
+      props,
+    );
+  };
 
   Component = TLShapeUtil.Component<T, E>(({ shape, events }, ref) => {
     const {
@@ -81,9 +81,9 @@ export class DrawUtil extends TLShapeUtil<T, E> {
         isFilled,
       },
       isDone,
-    } = shape
+    } = shape;
 
-    const simulatePressure = shape.points[2]?.[2] === 0.5
+    const simulatePressure = shape.points[2]?.[2] === 0.5;
 
     const outlinePoints = Utils.getFromCache(this.strokeCache, shape, () =>
       getStroke(shape.points, {
@@ -104,18 +104,18 @@ export class DrawUtil extends TLShapeUtil<T, E> {
         },
         simulatePressure,
         last: isDone,
-      })
-    )
+      }),
+    );
 
-    const drawPathData = getSvgPathFromStroke(outlinePoints)
+    const drawPathData = getSvgPathFromStroke(outlinePoints);
 
     return (
       <SVGContainer ref={ref} fr="" {...events}>
         {strokeWidth ? (
           <path
             d={drawPathData}
-            id={'path_stroke_' + shape.id}
-            fill={'transparent'}
+            id={"path_stroke_" + shape.id}
+            fill={"transparent"}
             stroke={stroke}
             strokeWidth={strokeWidth}
             strokeLinejoin="round"
@@ -125,10 +125,10 @@ export class DrawUtil extends TLShapeUtil<T, E> {
         ) : null}
         {
           <path
-            id={'path_' + shape.id}
+            id={"path_" + shape.id}
             d={drawPathData}
-            fill={isFilled ? fill : 'transparent'}
-            stroke={isFilled || strokeWidth > 0 ? 'transparent' : 'black'}
+            fill={isFilled ? fill : "transparent"}
+            stroke={isFilled || strokeWidth > 0 ? "transparent" : "black"}
             strokeWidth={isFilled || strokeWidth > 0 ? 0 : 1}
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -136,33 +136,33 @@ export class DrawUtil extends TLShapeUtil<T, E> {
           />
         }
       </SVGContainer>
-    )
-  })
+    );
+  });
 
   Indicator = TLShapeUtil.Indicator<T>(() => {
-    return <g />
-  })
+    return <g />;
+  });
 
   create = (props: { id: string } & Partial<T>) => {
-    this.refMap.set(props.id, React.createRef())
-    return this.getShape(props)
-  }
+    this.refMap.set(props.id, React.createRef());
+    return this.getShape(props);
+  };
 
   getBounds = (shape: DrawShape): TLBounds => {
     const bounds = Utils.translateBounds(
       Utils.getFromCache(this.pointsBoundsCache, shape.points, () =>
-        Utils.getBoundsFromPoints(shape.points)
+        Utils.getBoundsFromPoints(shape.points),
       ),
-      shape.point
-    )
+      shape.point,
+    );
 
-    return bounds
-  }
+    return bounds;
+  };
 
   hitTestBounds = (shape: DrawShape, brushBounds: TLBounds): boolean => {
     // Test axis-aligned shape
     if (!shape.rotation) {
-      const bounds = this.getBounds(shape)
+      const bounds = this.getBounds(shape);
 
       return (
         Utils.boundsContain(brushBounds, bounds) ||
@@ -170,38 +170,38 @@ export class DrawUtil extends TLShapeUtil<T, E> {
           intersectBoundsBounds(bounds, brushBounds).length > 0) &&
           intersectBoundsPolyline(
             Utils.translateBounds(brushBounds, Vec.neg(shape.point)),
-            shape.points
+            shape.points,
           ).length > 0)
-      )
+      );
     }
 
     // Test rotated shape
-    const rBounds = this.getRotatedBounds(shape)
+    const rBounds = this.getRotatedBounds(shape);
 
     const rotatedBounds = Utils.getFromCache(this.rotatedCache, shape, () => {
-      const c = Utils.getBoundsCenter(Utils.getBoundsFromPoints(shape.points))
-      return shape.points.map((pt) => Vec.rotWith(pt, c, shape.rotation || 0))
-    })
+      const c = Utils.getBoundsCenter(Utils.getBoundsFromPoints(shape.points));
+      return shape.points.map((pt) => Vec.rotWith(pt, c, shape.rotation || 0));
+    });
 
     return (
       Utils.boundsContain(brushBounds, rBounds) ||
       intersectBoundsPolyline(
         Utils.translateBounds(brushBounds, Vec.neg(shape.point)),
-        rotatedBounds
+        rotatedBounds,
       ).length > 0
-    )
-  }
+    );
+  };
 
   transform = (
     shape: DrawShape,
     bounds: TLBounds,
-    { initialShape, scaleX, scaleY }: TLTransformInfo<DrawShape>
+    { initialShape, scaleX, scaleY }: TLTransformInfo<DrawShape>,
   ): Partial<DrawShape> => {
     const initialShapeBounds = Utils.getFromCache(
       this.boundsCache,
       initialShape,
-      () => Utils.getBoundsFromPoints(initialShape.points)
-    )
+      () => Utils.getBoundsFromPoints(initialShape.points),
+    );
 
     const points = initialShape.points.map(([x, y, r]) => {
       return [
@@ -214,24 +214,24 @@ export class DrawUtil extends TLShapeUtil<T, E> {
             ? 1 - y / initialShapeBounds.height
             : y / initialShapeBounds.height),
         r,
-      ]
-    })
+      ];
+    });
 
-    const newBounds = Utils.getBoundsFromPoints(shape.points)
+    const newBounds = Utils.getBoundsFromPoints(shape.points);
 
     const point = Vec.sub(
       [bounds.minX, bounds.minY],
-      [newBounds.minX, newBounds.minY]
-    )
+      [newBounds.minX, newBounds.minY],
+    );
 
     return {
       points,
       point,
-    }
-  }
+    };
+  };
 }
 
-const average = (a: number, b: number) => (a + b) / 2
+const average = (a: number, b: number) => (a + b) / 2;
 
 /**
  * Turn an array of points into a path of quadradic curves.
@@ -241,46 +241,46 @@ const average = (a: number, b: number) => (a + b) / 2
  */
 export function getSvgPathFromStroke(
   points: number[][],
-  closed = true
+  closed = true,
 ): string {
-  const len = points.length
+  const len = points.length;
 
   if (len < 4) {
-    return ``
+    return ``;
   }
 
-  let a = points[0]
-  let b = points[1]
-  const c = points[2]
+  let a = points[0];
+  let b = points[1];
+  const c = points[2];
 
   let result = `M${a[0].toFixed(2)},${a[1].toFixed(2)} Q${b[0].toFixed(
-    2
+    2,
   )},${b[1].toFixed(2)} ${average(b[0], c[0]).toFixed(2)},${average(
     b[1],
-    c[1]
-  ).toFixed(2)} T`
+    c[1],
+  ).toFixed(2)} T`;
 
   for (let i = 2, max = len - 1; i < max; i++) {
-    a = points[i]
-    b = points[i + 1]
+    a = points[i];
+    b = points[i + 1];
     result += `${average(a[0], b[0]).toFixed(2)},${average(a[1], b[1]).toFixed(
-      2
-    )} `
+      2,
+    )} `;
   }
 
   if (closed) {
-    result += 'Z'
+    result += "Z";
   }
 
-  return result
+  return result;
 }
 
 export function dot([x, y]: number[]) {
-  return `M ${x - 0.5},${y} a .5,.5 0 1,0 1,0 a .5,.5 0 1,0 -1,0`
+  return `M ${x - 0.5},${y} a .5,.5 0 1,0 1,0 a .5,.5 0 1,0 -1,0`;
 }
 
 export function dots(points: number[][]) {
-  return points.map(dot).join(' ')
+  return points.map(dot).join(" ");
 }
 
-export const draw = new DrawUtil()
+export const draw = new DrawUtil();

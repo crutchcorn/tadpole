@@ -1,14 +1,14 @@
-import * as React from 'react'
-import * as Label from '@radix-ui/react-label'
+import * as React from "react";
+import * as Label from "@radix-ui/react-label";
 import {
   Root,
   Indicator,
   CheckboxProps as CheckboxOwnProps,
-} from '@radix-ui/react-checkbox'
-import styles from './checkbox.module.css'
+} from "@radix-ui/react-checkbox";
+import styles from "./checkbox.module.css";
 
 interface CheckboxProps extends CheckboxOwnProps {
-  name: string
+  name: string;
 }
 
 export function Checkbox(props: CheckboxProps) {
@@ -22,5 +22,5 @@ export function Checkbox(props: CheckboxProps) {
       </Root>
       <div />
     </>
-  )
+  );
 }
