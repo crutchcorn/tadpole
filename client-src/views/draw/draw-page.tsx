@@ -1,7 +1,8 @@
-import * as React from "react";
 import { Editor } from "./components/editor";
 import { Controls } from "./components/controls";
 import { useKeyboardShortcuts } from "./hooks";
+import { app } from "./state";
+import { socketSend } from "./services/socket";
 
 export function DrawPage() {
   useKeyboardShortcuts();
@@ -17,7 +18,11 @@ export function DrawPage() {
       <div className={`h-60 flex-grow`}>
         <Editor />
       </div>
-      <button>Send</button>
+      <button onClick={
+        () => {
+          socketSend({svg: app.copySvg(), type: "upload-svg"});
+        }
+      }>Send</button>
     </div>
   );
 }
