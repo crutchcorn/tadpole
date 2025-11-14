@@ -1,6 +1,6 @@
-name = "partyserver-fixture-hono"
-main = "src/server.ts"
-compatibility_date = "2024-04-19"
+name = "tadpole"
+main = "server-src/server.ts"
+compatibility_date = "2025-11-05"
 
 assets = {directory = "./public"}
 
