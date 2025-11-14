@@ -8,6 +8,8 @@ const UploadSVGSchema = z.object({
 const RibbitSchema = z.object({ 
   type: z.literal("ribbit"),
   name: z.string()
+});
+
 export const FrogSchema = z.union([
     z.literal("Frog1AP"),
     z.literal("Frog1BP"),
