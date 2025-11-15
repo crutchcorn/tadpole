@@ -46,6 +46,17 @@ export class Chat extends Server {
         }));
         break;
       }
+      case "request-frog": {
+        const hat = await this.ctx.storage.get<Hat>("hat") || "";
+        const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        connection.send(getMessageForClient({
+          type: "get_frog",
+          hat,
+          frog,
+          userId: connection.id,
+        }));
+        break;
+      }
       case "change-frog": {
         this.ctx.storage.put("hat", data.hat);
         this.ctx.storage.put("frog", data.frog);

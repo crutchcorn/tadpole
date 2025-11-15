@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
 import usePartySocket from "partysocket/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Frog, FromServerSocketMessage, Hat, SVGUploaded } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
-import { HAT_MAP } from "../views/room/state/hats";
-import { FROG_MAP } from "../views/room/state/frogs";
+import { HAT_MAP, HATS, REVERSE_HAT_MAP } from "../views/room/state/hats";
+import { FROG_MAP, FROGS, REVERSE_FROG_MAP } from "../views/room/state/frogs";
+import { socketSend } from "../views/draw/services/socket";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
   const [userMap, setUserMap] = useState({} as Record<string, { frog: Frog, hat: Hat }>);
+  const [hat, setHat] = useState("/TopHatP.png");
+  const [frog, setFrog] = useState("/Frog1AP.png");
 
   usePartySocket({
     host: window.location.host,
@@ -37,9 +40,18 @@ function Index() {
           }));
           break;
         }
+        case "get_frog": {
+          setHat(HAT_MAP[data.hat]!);
+          setFrog(FROG_MAP[data.frog]!);
+          break;
+        }
       }
     },
   });
+
+  useEffect(() => {
+    socketSend({ type: "request-frog" });
+  }, []);
 
   return (
     <div className="p-2 font-awexbmp h-screen flex flex-col">
@@ -49,7 +61,10 @@ function Index() {
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <UserToolbar />
+        <UserToolbar hat={hat}
+          frog={frog}
+          setFrog={setFrog}
+          setHat={setHat} />
       </div>
     </div>
   );
