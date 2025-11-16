@@ -76,6 +76,11 @@ export class Chat extends Server {
       }
       case "change-name": {
         this.ctx.storage.put("name", data.name);
+        this.broadcast(getMessageForClient({
+          type: "name_changed",
+          userId: connection.id,
+          name: data.name,
+        }));
         break;
       }
     }

@@ -106,12 +106,19 @@ const GetFrogSchema = z.object({
     name: z.string(),
 });
 
+const NameChangedSchema = z.object({
+    type: z.literal("name_changed"),
+    userId: z.string(),
+    name: z.string(),
+});
+
 // The type of messages sent from the server to the client via WebSocket
 export const FromServerSocketMessageSchema = z.union([
     SVGUploadedSchema,
     RibbitSentSchema,
     FrogChangedSchema,
     GetFrogSchema,
+    NameChangedSchema,
 ]);
 
 export type FromServerSocketMessage = z.infer<typeof FromServerSocketMessageSchema>;

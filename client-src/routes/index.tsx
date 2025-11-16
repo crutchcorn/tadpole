@@ -52,6 +52,13 @@ function Index() {
           setName(data.name);
           break;
         }
+        case "name_changed": {
+          setUserMap((prev) => ({
+            ...prev,
+            [data.userId]: { ...prev[data.userId], name: data.name },
+          }));
+          break;
+        }
         case "ribbit_sent": {
           const audio = new Audio("/ribbit.mp3");
           audio.play().catch((err) => console.error("Failed to play ribbit:", err));
