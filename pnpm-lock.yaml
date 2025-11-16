@@ -54,8 +54,8 @@ importers:
         specifier: ^19.1.1
         version: 19.2.0(react@19.2.0)
       react-hotkeys-hook:
-        specifier: ^3.4.0
-        version: 3.4.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: ^5.2.1
+        version: 5.2.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       rko:
         specifier: ^0.5.25
         version: 0.5.25(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -1847,9 +1847,6 @@ packages:
     resolution: {integrity: sha512-BIdolzGpDO9MQ4nu3AUuDwHZZ+KViNm+EZ75Ae55eMXMqLVhDFqEMXxtUe9Qh8hjL+pIna/frs2j6Y2yD5Ua/g==}
     engines: {node: '>=16.9.0'}
 
-  hotkeys-js@3.9.4:
-    resolution: {integrity: sha512-2zuLt85Ta+gIyvs4N88pCYskNrxf1TFv3LR9t5mdAZIX8BcgQQ48F2opUptvHa6m8zsy5v/a0i9mWzTrlNWU0Q==}
-
   idb-keyval@5.1.5:
     resolution: {integrity: sha512-J1utxYWQokYjy01LvDQ7WmiAtZCGUSkVi9EIBfUSyLOr/BesnMIxNGASTh9A1LzeISSjSqEPsfFdTss7EE7ofQ==}
 
@@ -2152,11 +2149,11 @@ packages:
     peerDependencies:
       react: ^19.2.0
 
-  react-hotkeys-hook@3.4.7:
-    resolution: {integrity: sha512-+bbPmhPAl6ns9VkXkNNyxlmCAIyDAcWbB76O4I0ntr3uWCRuIQf/aRLartUahe9chVMPj+OEzzfk3CQSjclUEQ==}
+  react-hotkeys-hook@5.2.1:
+    resolution: {integrity: sha512-xbKh6zJxd/vJHT4Bw4+0pBD662Fk20V+VFhLqciCg+manTVO4qlqRqiwFOYelfHN9dBvWj9vxaPkSS26ZSIJGg==}
     peerDependencies:
-      react: '>=16.8.1'
-      react-dom: '>=16.8.1'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
@@ -4138,8 +4135,6 @@ snapshots:
 
   hono@4.10.6: {}
 
-  hotkeys-js@3.9.4: {}
-
   idb-keyval@5.1.5:
     dependencies:
       safari-14-idb-fix: 1.0.6
@@ -4400,9 +4395,8 @@ snapshots:
       react: 19.2.0
       scheduler: 0.27.0
 
-  react-hotkeys-hook@3.4.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  react-hotkeys-hook@5.2.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      hotkeys-js: 3.9.4
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
