@@ -1,4 +1,4 @@
-import { RefObject, useMemo, useRef, useState } from "react";
+import { RefObject, useMemo, useRef, useState, useEffect } from "react";
 import { Controls } from "../draw/components/controls";
 import { Editor } from "../draw/components/editor";
 import { HATS, REVERSE_HAT_MAP } from "./state/hats";
@@ -13,6 +13,8 @@ interface UserToolbarProps {
   frog: string;
   setFrog: (value: string) => void;
   setHat: (value: string) => void;
+  name: string;
+  setName: (value: string) => void;
 }
 
 export default function UserToolbar({
@@ -20,9 +22,24 @@ export default function UserToolbar({
   frog,
   setFrog,
   setHat,
+  name,
+  setName,
 }: UserToolbarProps) {
-  const [name, setName] = useState("frogboi");
   const customizeDialogRef = useRef<HTMLDialogElement>(null);
+
+  // Debounce effect - sends name after 500ms of no changes
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      socketSend({ type: "change-name", name });
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [name]);
+
+  // Handler for blur event
+  const handleNameBlur = () => {
+    socketSend({ type: "change-name", name });
+  };
 
   return (
     <>
@@ -44,6 +61,7 @@ export default function UserToolbar({
             type="text"
             value={name}
             onChange={(e) => setName(e.currentTarget.value)}
+            onBlur={handleNameBlur}
             className="text-lg text-center w-fit border-2 border-green-800 bg-white font-bold rounded pl-2"
           />
           <button

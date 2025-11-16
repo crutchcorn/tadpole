@@ -25,6 +25,7 @@ function Index() {
   );
   const [hat, setHat] = useState("/TopHatP.png");
   const [frog, setFrog] = useState("/Frog1AP.png");
+  const [name, setName] = useState("frogboi");
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -48,6 +49,7 @@ function Index() {
         case "get_frog": {
           setHat(HAT_MAP[data.hat]!);
           setFrog(FROG_MAP[data.frog]!);
+          setName(data.name);
           break;
         }
         case "ribbit_sent": {
@@ -92,7 +94,7 @@ function Index() {
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} />
+        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} name={name} setName={setName} />
       </div>
     </div>
   );

@@ -49,10 +49,12 @@ export class Chat extends Server {
       case "request-frog": {
         const hat = await this.ctx.storage.get<Hat>("hat") || "";
         const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        const name = await this.ctx.storage.get<string>("name") || "frogboi";
         connection.send(getMessageForClient({
           type: "get_frog",
           hat,
           frog,
+          name,
           userId: connection.id,
         }));
         break;
@@ -66,6 +68,10 @@ export class Chat extends Server {
           userId: connection.id,
           frog: data.frog,
         }));
+        break;
+      }
+      case "change-name": {
+        this.ctx.storage.put("name", data.name);
         break;
       }
     }
