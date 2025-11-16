@@ -1,16 +1,11 @@
 import * as React from "react";
 import type { Doc, DrawShape, DrawStyles, State } from "./types";
-import {
-  TLPointerEventHandler,
-  TLShapeUtilsMap,
-  Utils,
-} from "@tldraw/core";
+import { TLPointerEventHandler, TLShapeUtilsMap, Utils } from "@tldraw/core";
 import { Vec } from "@tldraw/vec";
 import { StateManager } from "rko";
 import { draw, DrawUtil } from "./shapes";
-import sample from "./sample.json";
 import type { StateSelector } from "zustand";
-import { copyTextToClipboard, pointInPolygon } from "./utils";
+import { VecRound } from "../utils.ts";
 
 export const shapeUtils: TLShapeUtilsMap<DrawShape> = {
   draw: new DrawUtil(),
@@ -65,11 +60,6 @@ export class AppState extends StateManager<State> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window["app"] = this;
-
-    if (Object.values(this.state.page.shapes).length === 0) {
-      this.addShape({ id: "sample", points: sample });
-      this.centerShape("sample");
-    }
   };
 
   cleanup = (state: State) => {
@@ -178,10 +168,7 @@ export class AppState extends StateManager<State> {
     const camera = state.pageState.camera;
 
     const newPoint = [
-      ...Vec.sub(
-        Vec.round(Vec.sub(point, camera.point)),
-        shape.point,
-      ),
+      ...Vec.sub(VecRound(Vec.sub(point, camera.point)), shape.point),
       pressure,
       Date.now() - currentStroke.startTime,
     ];
@@ -196,14 +183,14 @@ export class AppState extends StateManager<State> {
     if (offset[0] < 0 || offset[1] < 0) {
       // If so, then we need to move the shape to cancel the offset
       shapePoint = [
-        ...Vec.round(Vec.add(shapePoint, offset)),
+        ...VecRound(Vec.add(shapePoint, offset)),
         shapePoint[2],
         shapePoint[3],
       ];
 
       // And we need to move the shape points to cancel the offset
       shapePoints = shapePoints.map((pt) =>
-        Vec.round(Vec.sub(pt, offset)).concat(pt[2], pt[3]),
+        VecRound(Vec.sub(pt, offset)).concat(pt[2], pt[3]),
       );
     }
 
@@ -268,98 +255,6 @@ export class AppState extends StateManager<State> {
     });
   };
 
-  replayShape = (points: number[][]) => {
-    const newShape = draw.create({
-      id: Utils.uniqueId(),
-      parentId: "page",
-      childIndex: 1,
-      point: [0, 0],
-      points: [],
-      style: this.state.appState.style,
-    });
-
-    this.patchState({
-      page: {
-        shapes: {
-          [newShape.id]: newShape,
-        },
-      },
-    });
-
-    this.centerShape(newShape.id);
-
-    points
-      .map((pt, i) => [...Vec.sub(pt, newShape.point), pt[2], pt[3] || i * 10])
-      .forEach((pt, i) => {
-        setTimeout(() => {
-          this.patchState({
-            page: {
-              shapes: {
-                [newShape.id]: {
-                  points: points.slice(0, i),
-                },
-              },
-            },
-          });
-        }, pt[3] * 20);
-      });
-  };
-
-  addShape = (shape: Partial<DrawShape>) => {
-    const newShape = draw.create({
-      id: Utils.uniqueId(),
-      parentId: "page",
-      childIndex: 1,
-      point: [0, 0],
-      points: [],
-      style: this.state.appState.style,
-      ...shape,
-    });
-
-    const bounds = Utils.getBoundsFromPoints(newShape.points);
-
-    const topLeft = [bounds.minX, bounds.minY];
-
-    newShape.points = newShape.points.map((pt, i) =>
-      Vec.sub(pt, topLeft).concat(pt[2] || 0.5, pt[3] || i * 10),
-    );
-
-    this.patchState({
-      page: {
-        shapes: {
-          [newShape.id]: newShape,
-        },
-      },
-    });
-
-    this.persist();
-
-    return newShape;
-  };
-
-
-
-  startStyleUpdate = () => {
-    return this.setSnapshot();
-  };
-
-  patchStyleForAllShapes = (style: Partial<DrawStyles>) => {
-    const { shapes } = this.state.page;
-
-    return this.patchState({
-      appState: {
-        style,
-      },
-      page: {
-        shapes: {
-          ...Object.fromEntries(
-            Object.keys(shapes).map((id) => [id, { style }]),
-          ),
-        },
-      },
-    });
-  };
-
   patchStyle = (style: Partial<DrawStyles>) => {
     return this.patchState({
       appState: {
@@ -382,128 +277,6 @@ export class AppState extends StateManager<State> {
           shapes: {
             ...Object.fromEntries(
               Object.entries(shapes).map(([id, { style }]) => [id, { style }]),
-            ),
-          },
-        },
-      },
-    });
-  };
-
-  setNextStyleForAllShapes = (style: Partial<DrawStyles>) => {
-    const { shapes } = this.state.page;
-
-    return this.setState({
-      before: {
-        appState: {
-          style: Object.fromEntries(
-            Object.keys(style).map((key) => [
-              key,
-              this.state.appState.style[key as keyof DrawStyles],
-            ]),
-          ),
-        },
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.entries(shapes).map(([id, shape]) => [
-                id,
-                {
-                  style: Object.fromEntries(
-                    Object.keys(style).map((key) => [
-                      key,
-                      shape.style[key as keyof DrawStyles],
-                    ]),
-                  ),
-                },
-              ]),
-            ),
-          },
-        },
-      },
-      after: {
-        appState: {
-          style,
-        },
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.keys(shapes).map((id) => [id, { style }]),
-            ),
-          },
-        },
-      },
-    });
-  };
-
-  resetStyle = (prop: keyof DrawStyles) => {
-    const { shapes } = this.state.page;
-    const { state } = this;
-
-    const initialStyle = initialState.appState.style[prop];
-
-    return this.setState({
-      before: {
-        appState: state.appState,
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.entries(shapes).map(([id, shape]) => [
-                id,
-                {
-                  style: { [prop]: shape.style[prop] },
-                },
-              ]),
-            ),
-          },
-        },
-      },
-      after: {
-        appState: {
-          style: { [prop]: initialStyle },
-        },
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.keys(shapes).map((id) => [id, { [prop]: initialStyle }]),
-            ),
-          },
-        },
-      },
-    });
-  };
-
-  resetStyles = () => {
-    const { shapes } = this.state.page;
-    const { state } = this;
-
-    const currentAppState = state.appState;
-    const initialAppState = initialState.appState;
-
-    return this.setState({
-      before: {
-        appState: currentAppState,
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.keys(shapes).map((id) => [
-                id,
-                {
-                  style: currentAppState.style,
-                },
-              ]),
-            ),
-          },
-        },
-      },
-      after: {
-        appState: initialAppState,
-        page: {
-          shapes: {
-            ...Object.fromEntries(
-              Object.keys(shapes).map((id) => [
-                id,
-                { style: initialAppState.style },
-              ]),
             ),
           },
         },
@@ -606,14 +379,6 @@ export class AppState extends StateManager<State> {
             point: [0, 0],
           },
         },
-      },
-    });
-  };
-
-  selectDrawingTool = () => {
-    this.patchState({
-      appState: {
-        tool: "drawing",
       },
     });
   };

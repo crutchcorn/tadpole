@@ -1,10 +1,6 @@
-import * as React from "react";
 import { Colors } from "../colors";
-import { Checkbox } from "../checkbox";
 import { Slider } from "../slider";
-import styles from "./controls.module.css";
-import { app, useAppState } from "../../state";
-import type { State } from "../../state/state";
+import { app } from "../../state";
 import { useControls, COLORS } from "./use-controls";
 
 export function Controls() {

@@ -13,7 +13,6 @@ import {
 import { Vec } from "@tldraw/vec";
 import { getStroke } from "perfect-freehand";
 import type { DrawShape } from "../types";
-import { EASINGS } from "../easings";
 
 type T = DrawShape;
 type E = SVGSVGElement;
@@ -69,13 +68,10 @@ export class DrawUtil extends TLShapeUtil<T, E> {
         strokeWidth,
         streamline,
         smoothing,
-        easing,
         taperStart,
         taperEnd,
         capStart,
         capEnd,
-        easingEnd,
-        easingStart,
         stroke,
         fill,
         isFilled,
@@ -90,17 +86,17 @@ export class DrawUtil extends TLShapeUtil<T, E> {
         size,
         thinning,
         streamline,
-        easing: EASINGS[easing],
+        easing: (t) => t,
         smoothing,
         start: {
           taper: taperStart,
           cap: capStart,
-          easing: EASINGS[easingStart],
+          easing: (t) => t,
         },
         end: {
           taper: taperEnd,
           cap: capEnd,
-          easing: EASINGS[easingEnd],
+          easing: (t) => t,
         },
         simulatePressure,
         last: isDone,
@@ -273,14 +269,6 @@ export function getSvgPathFromStroke(
   }
 
   return result;
-}
-
-export function dot([x, y]: number[]) {
-  return `M ${x - 0.5},${y} a .5,.5 0 1,0 1,0 a .5,.5 0 1,0 -1,0`;
-}
-
-export function dots(points: number[][]) {
-  return points.map(dot).join(" ");
 }
 
 export const draw = new DrawUtil();

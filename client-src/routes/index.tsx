@@ -12,6 +12,7 @@ import { HAT_MAP } from "../views/room/state/hats";
 import { FROG_MAP } from "../views/room/state/frogs";
 import { socketSend } from "../views/draw/services/socket";
 import { socket } from "../views/draw/constants/constants";
+import { useKeyboardShortcuts } from "../views/draw/hooks";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -69,6 +70,8 @@ function Index() {
       socket.removeEventListener("open", onOpen);
     };
   }, []);
+
+  useKeyboardShortcuts();
 
   return (
     <div className="p-2 font-awexbmp h-screen flex flex-col">
