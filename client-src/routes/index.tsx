@@ -7,6 +7,8 @@ import {
   Hat,
   SVGUploaded,
   DEFAULT_NAME,
+  DEFAULT_HAT,
+  DEFAULT_FROG,
 } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
@@ -24,8 +26,8 @@ function Index() {
   const [userMap, setUserMap] = useState(
     {} as Record<string, { frog: Frog; hat: Hat; name: string }>,
   );
-  const [hat, setHat] = useState("/TopHatP.png");
-  const [frog, setFrog] = useState("/Frog1AP.png");
+  const [hat, setHat] = useState(HAT_MAP[DEFAULT_HAT]!);
+  const [frog, setFrog] = useState(FROG_MAP[DEFAULT_FROG]!);
   const [name, setName] = useState(DEFAULT_NAME);
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { Server } from "partyserver";
 
 import type { Connection, WSMessage } from "partyserver";
 
-import { FromClientSocketMessage, FromServerSocketMessage, Frog, Hat, DEFAULT_NAME } from "../isomophic-src/isomorphic";
+import { FromClientSocketMessage, FromServerSocketMessage, Frog, Hat, DEFAULT_NAME, DEFAULT_HAT, DEFAULT_FROG } from "../isomophic-src/isomorphic";
 
 function getMessageForClient(data: FromServerSocketMessage): string {
   return JSON.stringify(data);
@@ -49,8 +49,8 @@ export class Chat extends Server {
         break;
       }
       case "request-frog": {
-        const hat = await this.ctx.storage.get<Hat>("hat") || "";
-        const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        const hat = await this.ctx.storage.get<Hat>("hat") || DEFAULT_HAT;
+        const frog = await this.ctx.storage.get<Frog>("frog") || DEFAULT_FROG;
         const name = await this.ctx.storage.get<string>("name") || DEFAULT_NAME;
         connection.send(getMessageForClient({
           type: "get_frog",
