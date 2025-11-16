@@ -1,16 +1,6 @@
 import type { TLBinding, TLPage, TLPageState, TLShape } from "@tldraw/core";
 
-export type Entries<T> = {
-  [K in keyof T]: [K, T[K]];
-}[keyof T][];
-
 export type Patch<T> = Partial<{ [P in keyof T]: Patch<T[P]> }>;
-
-export type Command<T> = {
-  id: string;
-  before: Patch<T>;
-  after: Patch<T>;
-};
 
 export interface DrawStyles {
   size: number;
@@ -52,24 +42,3 @@ export interface Data extends State {
   undo: () => void;
   redo: () => void;
 }
-
-export type Easing =
-  | "linear"
-  | "easeInQuad"
-  | "easeOutQuad"
-  | "easeInOutQuad"
-  | "easeInCubic"
-  | "easeOutCubic"
-  | "easeInOutCubic"
-  | "easeInQuart"
-  | "easeOutQuart"
-  | "easeInOutQuart"
-  | "easeInQuint"
-  | "easeOutQuint"
-  | "easeInOutQuint"
-  | "easeInSine"
-  | "easeOutSine"
-  | "easeInOutSine"
-  | "easeInExpo"
-  | "easeOutExpo"
-  | "easeInOutExpo";
