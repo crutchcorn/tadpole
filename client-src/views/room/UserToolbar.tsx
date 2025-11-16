@@ -22,12 +22,10 @@ export default function UserToolbar({
   setHat,
 }: UserToolbarProps) {
   const [name, setName] = useState("frogboi");
-  const ribbitRef = useRef<HTMLAudioElement>(null);
   const customizeDialogRef = useRef<HTMLDialogElement>(null);
 
   return (
     <>
-      <audio ref={ribbitRef} src="/ribbit.mp3"></audio>
       <CustomizeFrogDialog
         hat={hat}
         frog={frog}
@@ -74,7 +72,6 @@ export default function UserToolbar({
           </button>
           <button
             onClick={() => {
-              ribbitRef.current?.play();
               socketSend({ type: "ribbit", name });
             }}
             className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"

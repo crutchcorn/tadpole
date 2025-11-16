@@ -50,6 +50,11 @@ function Index() {
           setFrog(FROG_MAP[data.frog]!);
           break;
         }
+        case "ribbit_sent": {
+          const audio = new Audio("/ribbit.mp3");
+          audio.play().catch((err) => console.error("Failed to play ribbit:", err));
+          break;
+        }
       }
     }
 
