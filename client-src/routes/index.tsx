@@ -1,28 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Frog, FromServerSocketMessage, Hat, SVGUploaded } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
 import { FROG_MAP } from "../views/room/state/frogs";
 import { socketSend } from "../views/draw/services/socket";
-import PartySocket from "partysocket";
+import { SocketContext } from "../constants/socket";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const socket = new PartySocket({
-  host: window.location.host,
-  room: "room-1",
-  party: "chat",
-})
-
-socket.addEventListener("message", (event) => {
-  console.log("Socket Message:", event.data);
-});
-
 function Index() {
+  const socket = useContext(SocketContext);
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
   const [userMap, setUserMap] = useState({} as Record<string, { frog: Frog, hat: Hat }>);
   const [hat, setHat] = useState("/TopHatP.png");
@@ -62,13 +53,14 @@ function Index() {
     return () => {
       socket.removeEventListener("message", onMessage);
     };
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     function onOpen() {
       socketSend({ type: "request-frog" });
     }
     socket.addEventListener("open", onOpen);
+    onOpen();
 
     return () => {
       socket.removeEventListener("open", onOpen);

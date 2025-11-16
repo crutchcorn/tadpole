@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import PartySocket from "partysocket";
+import { SocketContext } from "./constants/socket";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -16,6 +18,12 @@ declare module "@tanstack/react-router" {
   }
 }
 
+const socket = new PartySocket({
+  host: window.location.host,
+  room: "room-1",
+  party: "chat",
+})
+
 const queryClient = new QueryClient();
 
 // Render the app
@@ -24,9 +32,11 @@ if (!rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <SocketContext value={socket}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </SocketContext>
     </StrictMode>,
   );
 }
