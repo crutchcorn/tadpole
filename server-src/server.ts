@@ -29,12 +29,14 @@ export class Chat extends Server {
 
         const hat = await this.ctx.storage.get<Hat>("hat") || "";
         const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        const name = await this.ctx.storage.get<string>("name") || "frogboi";
 
         this.broadcast(getMessageForClient({
           type: "svg_uploaded",
           hat,
           userId: connection.id,
           frog,
+          name,
           svgPath: `https://drawings.tadpole.social/${svgFileName}`,
         }));
         break;
@@ -62,11 +64,13 @@ export class Chat extends Server {
       case "change-frog": {
         this.ctx.storage.put("hat", data.hat);
         this.ctx.storage.put("frog", data.frog);
+        const name = await this.ctx.storage.get<string>("name") || "frogboi";
         this.broadcast(getMessageForClient({
           type: "frog_changed",
           hat: data.hat,
           userId: connection.id,
           frog: data.frog,
+          name,
         }));
         break;
       }

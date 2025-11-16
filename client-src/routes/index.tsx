@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
   const [userMap, setUserMap] = useState(
-    {} as Record<string, { frog: Frog; hat: Hat }>,
+    {} as Record<string, { frog: Frog; hat: Hat; name: string }>,
   );
   const [hat, setHat] = useState("/TopHatP.png");
   const [frog, setFrog] = useState("/Frog1AP.png");
@@ -35,14 +35,14 @@ function Index() {
           setMessages((prev) => [...prev, data]);
           setUserMap((prev) => ({
             ...prev,
-            [data.userId]: { frog: data.frog, hat: data.hat },
+            [data.userId]: { frog: data.frog, hat: data.hat, name: data.name },
           }));
           break;
         }
         case "frog_changed": {
           setUserMap((prev) => ({
             ...prev,
-            [data.userId]: { frog: data.frog, hat: data.hat },
+            [data.userId]: { frog: data.frog, hat: data.hat, name: data.name },
           }));
           break;
         }
@@ -86,7 +86,7 @@ function Index() {
         {messages.map((message, i) => (
           <UserMessage
             key={i}
-            name="frogboi"
+            name={userMap[message.userId]?.name || "frogboi"}
             hat={HAT_MAP[userMap[message.userId]!.hat]!}
             frog={FROG_MAP[userMap[message.userId]!.frog]!}
             image={message.svgPath}

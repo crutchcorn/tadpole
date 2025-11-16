@@ -85,6 +85,7 @@ const SVGUploadedSchema = z.object({
     frog: FrogSchema,
     userId: z.string(),
     svgPath: z.string(),
+    name: z.string(),
 });
 
 export type SVGUploaded = z.infer<typeof SVGUploadedSchema>;
@@ -94,6 +95,7 @@ const FrogChangedSchema = z.object({
     userId: z.string(),
     hat: HatSchema,
     frog: FrogSchema,
+    name: z.string(),
 });
 
 const GetFrogSchema = z.object({
