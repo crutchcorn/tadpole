@@ -49,7 +49,7 @@ export class Chat extends Server {
       case "request-frog": {
         const hat = await this.ctx.storage.get<Hat>("hat") || "";
         const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
-        connection.send(getMessageForClient({
+        this.broadcast(getMessageForClient({
           type: "get_frog",
           hat,
           frog,
