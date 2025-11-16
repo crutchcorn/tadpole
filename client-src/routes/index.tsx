@@ -1,21 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
-import { useContext, useEffect, useState } from "react";
-import { Frog, FromServerSocketMessage, Hat, SVGUploaded } from "../../isomophic-src/isomorphic";
+import { useEffect, useState } from "react";
+import {
+  Frog,
+  FromServerSocketMessage,
+  Hat,
+  SVGUploaded,
+} from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
 import { FROG_MAP } from "../views/room/state/frogs";
 import { socketSend } from "../views/draw/services/socket";
-import { SocketContext } from "../constants/socket";
+import { socket } from "../views/draw/constants/constants";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const socket = useContext(SocketContext);
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
-  const [userMap, setUserMap] = useState({} as Record<string, { frog: Frog, hat: Hat }>);
+  const [userMap, setUserMap] = useState(
+    {} as Record<string, { frog: Frog; hat: Hat }>,
+  );
   const [hat, setHat] = useState("/TopHatP.png");
   const [frog, setFrog] = useState("/Frog1AP.png");
 
@@ -39,11 +45,8 @@ function Index() {
           break;
         }
         case "get_frog": {
-          debugger;
-          if (data.userId !== socket.id) return;
           setHat(HAT_MAP[data.hat]!);
           setFrog(FROG_MAP[data.frog]!);
-          console.log({data})
           break;
         }
       }
@@ -53,7 +56,7 @@ function Index() {
     return () => {
       socket.removeEventListener("message", onMessage);
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     function onOpen() {
@@ -65,20 +68,23 @@ function Index() {
     return () => {
       socket.removeEventListener("open", onOpen);
     };
-  }, [socket]);
+  }, []);
 
   return (
     <div className="p-2 font-awexbmp h-screen flex flex-col">
       <ul className="flex-1 overflow-auto mb-0">
         {messages.map((message, i) => (
-          <UserMessage key={i} name="frogboi" hat={HAT_MAP[userMap[message.userId]!.hat]!} frog={FROG_MAP[userMap[message.userId]!.frog]!} image={message.svgPath} />
+          <UserMessage
+            key={i}
+            name="frogboi"
+            hat={HAT_MAP[userMap[message.userId]!.hat]!}
+            frog={FROG_MAP[userMap[message.userId]!.frog]!}
+            image={message.svgPath}
+          />
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <UserToolbar hat={hat}
-          frog={frog}
-          setFrog={setFrog}
-          setHat={setHat} />
+        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} />
       </div>
     </div>
   );

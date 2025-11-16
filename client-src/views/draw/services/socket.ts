@@ -1,4 +1,4 @@
-import { FromClientSocketMessage, FromServerSocketMessage } from "../../../../isomophic-src/isomorphic";
+import { FromClientSocketMessage } from "../../../../isomophic-src/isomorphic";
 import { socket } from "../constants/constants";
 
 export function socketSend(type: FromClientSocketMessage) {
