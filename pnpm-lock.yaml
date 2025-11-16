@@ -33,14 +33,14 @@ importers:
         specifier: ^1.136.2
         version: 1.136.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tldraw/core':
-        specifier: ^0.1.19
-        version: 0.1.21(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: ^1.23.2
+        version: 1.23.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tldraw/intersect':
-        specifier: ^0.1.3
-        version: 0.1.4
+        specifier: ^1.9.2
+        version: 1.9.2
       '@tldraw/vec':
-        specifier: ^0.1.3
-        version: 0.1.3
+        specifier: ^1.9.2
+        version: 1.9.2
       hono:
         specifier: ^4.9.8
         version: 4.10.6
@@ -1333,20 +1333,14 @@ packages:
     resolution: {integrity: sha512-IKwZENsK7owmW1Lm5FhuHegY/SyQ8KqtL/7mTSnzoKJgfzhrrf9qwKB1rmkKkt+svUuy/Zw3uVEpZtUzQruWtA==}
     engines: {node: '>=12'}
 
-  '@tldraw/core@0.1.21':
-    resolution: {integrity: sha512-qaqXqVbeEq9jbjBsODS+UV/7opf4TyLOAi58gw94XC6tPwHpl8pkIvCKnyl10lHhac0GxGxSB+MPyKhlKioeZg==}
+  '@tldraw/core@1.23.2':
+    resolution: {integrity: sha512-cx+KfqemSHvVonNGwEolosMOsJt5cl3PGRBaXcZOOXQxnFALF22dnMtm6lbmlQQA71EfqNMP5e+qV3jCwuYaqA==}
     peerDependencies:
       react: '>=16.8'
-      react-dom: ^16.8 || ^17.0
-
-  '@tldraw/intersect@0.1.4':
-    resolution: {integrity: sha512-pxNMyUD9BMy0JqUSik4RXhf/meRA1TwJ3zESLebQ3EB3kThd9zICIUH5U8RmosvBx0c7dLMTvVzA1yVRbQBslQ==}
+      react-dom: '>=16.8'
 
   '@tldraw/intersect@1.9.2':
     resolution: {integrity: sha512-teUQLy+p5YT4PIKOHaL+zM0NYD1779mPp02xabP+5LGLvv7tt9VaqJ9D899EYppQbBLN6be6CJUrmibrvLtnUQ==}
-
-  '@tldraw/vec@0.1.3':
-    resolution: {integrity: sha512-QIQu6xHWqYBarfCR2Cd55pb+HECCEFI3RlU0VEueztzGe2k5Mwcv1EuuIdPTZ1tg5o95Deo7mYgZKeZTcUCIxA==}
 
   '@tldraw/vec@1.9.2':
     resolution: {integrity: sha512-k9vH52MRpJHjVcaahWu6VqvhLeE9h1qL5Z2gLobS9zTMpUJ59kBQPNo0VPzPlDYBpXdS4GxuB4jYQMnKvuPAZg==}
@@ -3556,23 +3550,18 @@ snapshots:
 
   '@tanstack/virtual-file-routes@1.133.19': {}
 
-  '@tldraw/core@0.1.21(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@tldraw/core@1.23.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@tldraw/intersect': 1.9.2
       '@tldraw/vec': 1.9.2
       '@use-gesture/react': 10.3.1(react@19.2.0)
+      perfect-freehand: 1.2.2
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-
-  '@tldraw/intersect@0.1.4':
-    dependencies:
-      '@tldraw/vec': 0.1.3
 
   '@tldraw/intersect@1.9.2':
     dependencies:
       '@tldraw/vec': 1.9.2
-
-  '@tldraw/vec@0.1.3': {}
 
   '@tldraw/vec@1.9.2': {}
 

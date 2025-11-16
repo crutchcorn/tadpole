@@ -4,8 +4,8 @@ import { TLPointerEventHandler, TLShapeUtilsMap, Utils } from "@tldraw/core";
 import { Vec } from "@tldraw/vec";
 import { StateManager } from "rko";
 import { draw, DrawUtil } from "./shapes";
-import sample from "./sample.json";
 import type { StateSelector } from "zustand";
+import { VecRound } from "../utils.ts";
 
 export const shapeUtils: TLShapeUtilsMap<DrawShape> = {
   draw: new DrawUtil(),
@@ -168,7 +168,7 @@ export class AppState extends StateManager<State> {
     const camera = state.pageState.camera;
 
     const newPoint = [
-      ...Vec.sub(Vec.round(Vec.sub(point, camera.point)), shape.point),
+      ...Vec.sub(VecRound(Vec.sub(point, camera.point)), shape.point),
       pressure,
       Date.now() - currentStroke.startTime,
     ];
@@ -183,14 +183,14 @@ export class AppState extends StateManager<State> {
     if (offset[0] < 0 || offset[1] < 0) {
       // If so, then we need to move the shape to cancel the offset
       shapePoint = [
-        ...Vec.round(Vec.add(shapePoint, offset)),
+        ...VecRound(Vec.add(shapePoint, offset)),
         shapePoint[2],
         shapePoint[3],
       ];
 
       // And we need to move the shape points to cancel the offset
       shapePoints = shapePoints.map((pt) =>
-        Vec.round(Vec.sub(pt, offset)).concat(pt[2], pt[3]),
+        VecRound(Vec.sub(pt, offset)).concat(pt[2], pt[3]),
       );
     }
 
