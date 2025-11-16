@@ -1,10 +1,10 @@
 import { RefObject, useMemo, useRef, useState, useEffect } from "react";
-import { Controls } from "../draw/components/controls";
-import { Editor } from "../draw/components/editor";
-import { HATS, REVERSE_HAT_MAP } from "./state/hats";
-import { FROGS, REVERSE_FROG_MAP } from "./state/frogs";
-import { socketSend } from "../draw/services/socket";
-import { app } from "../draw/state";
+import { Controls } from "../controls";
+import { Editor } from "../editor";
+import { HATS, REVERSE_HAT_MAP } from "../../constants/hats.ts";
+import { FROGS, REVERSE_FROG_MAP } from "../../constants/frogs.ts";
+import { socketSend } from "../../services/socket.ts";
+import { app } from "../../state";
 
 const EditPencil = `/StreamlineFreehand-EditPencil.svg`;
 

@@ -1,11 +1,11 @@
 import * as React from "react";
-import type { Doc, DrawShape, DrawStyles, State } from "./types";
+import type { Doc, DrawShape, DrawStyles, State } from "./types.ts";
 import { TLPointerEventHandler, TLShapeUtilsMap, Utils } from "@tldraw/core";
 import { Vec } from "@tldraw/vec";
 import { StateManager } from "rko";
 import { draw, DrawUtil } from "./shapes";
 import type { StateSelector } from "zustand";
-import { VecRound } from "../utils.ts";
+import { VecRound } from "../utils/utils.ts";
 
 export const shapeUtils: TLShapeUtilsMap<DrawShape> = {
   draw: new DrawUtil(),

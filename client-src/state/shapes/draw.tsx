@@ -12,7 +12,7 @@ import {
 } from "@tldraw/intersect";
 import { Vec } from "@tldraw/vec";
 import { getStroke } from "perfect-freehand";
-import type { DrawShape } from "../types";
+import type { DrawShape } from "../types.ts";
 
 type T = DrawShape;
 type E = SVGSVGElement;

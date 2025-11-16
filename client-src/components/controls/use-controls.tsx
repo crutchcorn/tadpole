@@ -1,6 +1,6 @@
 import * as React from "react";
 import { app, useAppState } from "../../state";
-import type { State } from "../../state/types";
+import type { State } from "../../state/types.ts";
 
 export const COLORS = [
   "#000000",

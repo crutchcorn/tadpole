@@ -1,4 +1,4 @@
-import {HatSchema} from "../../../../isomophic-src/isomorphic"
+import {HatSchema} from "../../isomophic-src/isomorphic.ts"
 
 export const HAT_MAP: Record<string, string | null> = HatSchema.options.reduce((acc, hat) => {
   const val = hat.value;

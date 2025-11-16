@@ -1,7 +1,7 @@
 import { Colors } from "../colors";
 import { Slider } from "../slider";
 import { app } from "../../state";
-import { useControls, COLORS } from "./use-controls";
+import { useControls, COLORS } from "./use-controls.tsx";
 
 export function Controls() {
   const {

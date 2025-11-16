@@ -1,4 +1,4 @@
-import {FrogSchema} from "../../../../isomophic-src/isomorphic"
+import {FrogSchema} from "../../isomophic-src/isomorphic.ts"
 
 export const FROG_MAP: Record<string, string | null> = FrogSchema.options.reduce((acc, frog) => {
   const val = frog.value;

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import UserToolbar from "../views/room/UserToolbar";
+import UserToolbar from "../components/user-toolbar/user-toolbar.tsx";
 import { useEffect, useState } from "react";
 import {
   Frog,
@@ -10,12 +10,12 @@ import {
   DEFAULT_HAT,
   DEFAULT_FROG,
 } from "../../isomophic-src/isomorphic";
-import UserMessage from "../views/room/UserMessage";
-import { HAT_MAP } from "../views/room/state/hats";
-import { FROG_MAP } from "../views/room/state/frogs";
-import { socketSend } from "../views/draw/services/socket";
-import { socket } from "../views/draw/constants/constants";
-import { useKeyboardShortcuts } from "../views/draw/hooks";
+import UserMessage from "../components/user-message/user-message.tsx";
+import { HAT_MAP } from "../constants/hats.ts";
+import { FROG_MAP } from "../constants/frogs.ts";
+import { socketSend } from "../services/socket";
+import { socket } from "../constants/socket.ts";
+import { useKeyboardShortcuts } from "../hooks";
 
 export const Route = createFileRoute("/")({
   component: Index,
