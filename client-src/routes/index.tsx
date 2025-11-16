@@ -6,6 +6,7 @@ import {
   FromServerSocketMessage,
   Hat,
   SVGUploaded,
+  DEFAULT_NAME,
 } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
@@ -25,7 +26,7 @@ function Index() {
   );
   const [hat, setHat] = useState("/TopHatP.png");
   const [frog, setFrog] = useState("/Frog1AP.png");
-  const [name, setName] = useState("frogboi");
+  const [name, setName] = useState(DEFAULT_NAME);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -93,7 +94,7 @@ function Index() {
         {messages.map((message, i) => (
           <UserMessage
             key={i}
-            name={userMap[message.userId]?.name || "frogboi"}
+            name={userMap[message.userId]?.name || DEFAULT_NAME}
             hat={HAT_MAP[userMap[message.userId]!.hat]!}
             frog={FROG_MAP[userMap[message.userId]!.frog]!}
             image={message.svgPath}

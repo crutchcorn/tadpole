@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const DEFAULT_NAME = "frogboi";
+
 const UploadSVGSchema = z.object({
     type: z.literal("upload-svg"),
     svg: z.string(),
