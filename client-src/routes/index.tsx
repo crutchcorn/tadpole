@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import UserToolbar from "../views/room/UserToolbar";
-import usePartySocket from "partysocket/react";
-import { useRef, useState } from "react";
-import { Frog, FromServerSocketMessage, Hat, SVGUploaded } from "../../isomophic-src/isomorphic";
+import { useEffect, useState } from "react";
+import {
+  Frog,
+  FromServerSocketMessage,
+  Hat,
+  SVGUploaded,
+} from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
 import { FROG_MAP } from "../views/room/state/frogs";
+import { socketSend } from "../views/draw/services/socket";
+import { socket } from "../views/draw/constants/constants";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -13,13 +19,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
-  const [userMap, setUserMap] = useState({} as Record<string, { frog: Frog, hat: Hat }>);
+  const [userMap, setUserMap] = useState(
+    {} as Record<string, { frog: Frog; hat: Hat }>,
+  );
+  const [hat, setHat] = useState("/TopHatP.png");
+  const [frog, setFrog] = useState("/Frog1AP.png");
 
-  usePartySocket({
-    host: window.location.host,
-    room: "room-1",
-    party: "chat",
-    onMessage(event) {
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
       const data: FromServerSocketMessage = JSON.parse(event.data);
       switch (data.type) {
         case "svg_uploaded": {
@@ -37,19 +44,47 @@ function Index() {
           }));
           break;
         }
+        case "get_frog": {
+          setHat(HAT_MAP[data.hat]!);
+          setFrog(FROG_MAP[data.frog]!);
+          break;
+        }
       }
-    },
-  });
+    }
+
+    socket.addEventListener("message", onMessage);
+    return () => {
+      socket.removeEventListener("message", onMessage);
+    };
+  }, []);
+
+  useEffect(() => {
+    function onOpen() {
+      socketSend({ type: "request-frog" });
+    }
+    socket.addEventListener("open", onOpen);
+    onOpen();
+
+    return () => {
+      socket.removeEventListener("open", onOpen);
+    };
+  }, []);
 
   return (
     <div className="p-2 font-awexbmp h-screen flex flex-col">
       <ul className="flex-1 overflow-auto mb-0">
-        {messages.map((message) => (
-          <UserMessage name="frogboi" hat={HAT_MAP[userMap[message.userId]!.hat]!} frog={FROG_MAP[userMap[message.userId]!.frog]!} image={message.svgPath} />
+        {messages.map((message, i) => (
+          <UserMessage
+            key={i}
+            name="frogboi"
+            hat={HAT_MAP[userMap[message.userId]!.hat]!}
+            frog={FROG_MAP[userMap[message.userId]!.frog]!}
+            image={message.svgPath}
+          />
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <UserToolbar />
+        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} />
       </div>
     </div>
   );

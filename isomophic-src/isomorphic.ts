@@ -54,11 +54,16 @@ const ChangeFrogSchema = z.object({
     frog: FrogSchema,
 });
 
+const RequestFrogSchema = z.object({
+    type: z.literal("request-frog"),
+});
+
 // The type of messages sent from the client to the server via WebSocket
 export const FromClientSocketMessageSchema = z.union([
     UploadSVGSchema,
     RibbitSchema,
     ChangeFrogSchema,
+    RequestFrogSchema,
 ]);
 
 export type FromClientSocketMessage = z.infer<typeof FromClientSocketMessageSchema>;
@@ -85,11 +90,19 @@ const FrogChangedSchema = z.object({
     frog: FrogSchema,
 });
 
+const GetFrogSchema = z.object({
+    type: z.literal("get_frog"),
+    userId: z.string(),
+    frog: FrogSchema,
+    hat: HatSchema,
+});
+
 // The type of messages sent from the server to the client via WebSocket
 export const FromServerSocketMessageSchema = z.union([
     SVGUploadedSchema,
     RibbitSentSchema,
     FrogChangedSchema,
+    GetFrogSchema,
 ]);
 
 export type FromServerSocketMessage = z.infer<typeof FromServerSocketMessageSchema>;
