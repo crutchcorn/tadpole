@@ -6,6 +6,9 @@ import {
   FromServerSocketMessage,
   Hat,
   SVGUploaded,
+  DEFAULT_NAME,
+  DEFAULT_HAT,
+  DEFAULT_FROG,
 } from "../../isomophic-src/isomorphic";
 import UserMessage from "../views/room/UserMessage";
 import { HAT_MAP } from "../views/room/state/hats";
@@ -21,10 +24,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [messages, setMessages] = useState<SVGUploaded[]>([]);
   const [userMap, setUserMap] = useState(
-    {} as Record<string, { frog: Frog; hat: Hat }>,
+    {} as Record<string, { frog: Frog; hat: Hat; name: string }>,
   );
-  const [hat, setHat] = useState("/TopHatP.png");
-  const [frog, setFrog] = useState("/Frog1AP.png");
+  const [hat, setHat] = useState(HAT_MAP[DEFAULT_HAT]!);
+  const [frog, setFrog] = useState(FROG_MAP[DEFAULT_FROG]!);
+  const [name, setName] = useState(DEFAULT_NAME);
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
@@ -34,20 +38,28 @@ function Index() {
           setMessages((prev) => [...prev, data]);
           setUserMap((prev) => ({
             ...prev,
-            [data.userId]: { frog: data.frog, hat: data.hat },
+            [data.userId]: { frog: data.frog, hat: data.hat, name: data.name },
           }));
           break;
         }
         case "frog_changed": {
           setUserMap((prev) => ({
             ...prev,
-            [data.userId]: { frog: data.frog, hat: data.hat },
+            [data.userId]: { frog: data.frog, hat: data.hat, name: data.name },
           }));
           break;
         }
         case "get_frog": {
           setHat(HAT_MAP[data.hat]!);
           setFrog(FROG_MAP[data.frog]!);
+          setName(data.name);
+          break;
+        }
+        case "name_changed": {
+          setUserMap((prev) => ({
+            ...prev,
+            [data.userId]: { ...prev[data.userId], name: data.name },
+          }));
           break;
         }
         case "ribbit_sent": {
@@ -84,7 +96,7 @@ function Index() {
         {messages.map((message, i) => (
           <UserMessage
             key={i}
-            name="frogboi"
+            name={userMap[message.userId]?.name || DEFAULT_NAME}
             hat={HAT_MAP[userMap[message.userId]!.hat]!}
             frog={FROG_MAP[userMap[message.userId]!.frog]!}
             image={message.svgPath}
@@ -92,7 +104,7 @@ function Index() {
         ))}
       </ul>
       <div className="sticky bottom-0">
-        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} />
+        <UserToolbar hat={hat} frog={frog} setFrog={setFrog} setHat={setHat} name={name} setName={setName} />
       </div>
     </div>
   );

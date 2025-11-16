@@ -4,7 +4,7 @@ import { Server } from "partyserver";
 
 import type { Connection, WSMessage } from "partyserver";
 
-import { FromClientSocketMessage, FromServerSocketMessage, Frog, Hat } from "../isomophic-src/isomorphic";
+import { FromClientSocketMessage, FromServerSocketMessage, Frog, Hat, DEFAULT_NAME, DEFAULT_HAT, DEFAULT_FROG } from "../isomophic-src/isomorphic";
 
 function getMessageForClient(data: FromServerSocketMessage): string {
   return JSON.stringify(data);
@@ -29,12 +29,14 @@ export class Chat extends Server {
 
         const hat = await this.ctx.storage.get<Hat>("hat") || "";
         const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        const name = await this.ctx.storage.get<string>("name") || DEFAULT_NAME;
 
         this.broadcast(getMessageForClient({
           type: "svg_uploaded",
           hat,
           userId: connection.id,
           frog,
+          name,
           svgPath: `https://drawings.tadpole.social/${svgFileName}`,
         }));
         break;
@@ -47,12 +49,14 @@ export class Chat extends Server {
         break;
       }
       case "request-frog": {
-        const hat = await this.ctx.storage.get<Hat>("hat") || "";
-        const frog = await this.ctx.storage.get<Frog>("frog") || "Frog1AP";
+        const hat = await this.ctx.storage.get<Hat>("hat") || DEFAULT_HAT;
+        const frog = await this.ctx.storage.get<Frog>("frog") || DEFAULT_FROG;
+        const name = await this.ctx.storage.get<string>("name") || DEFAULT_NAME;
         connection.send(getMessageForClient({
           type: "get_frog",
           hat,
           frog,
+          name,
           userId: connection.id,
         }));
         break;
@@ -60,11 +64,22 @@ export class Chat extends Server {
       case "change-frog": {
         this.ctx.storage.put("hat", data.hat);
         this.ctx.storage.put("frog", data.frog);
+        const name = await this.ctx.storage.get<string>("name") || DEFAULT_NAME;
         this.broadcast(getMessageForClient({
           type: "frog_changed",
           hat: data.hat,
           userId: connection.id,
           frog: data.frog,
+          name,
+        }));
+        break;
+      }
+      case "change-name": {
+        this.ctx.storage.put("name", data.name);
+        this.broadcast(getMessageForClient({
+          type: "name_changed",
+          userId: connection.id,
+          name: data.name,
         }));
         break;
       }

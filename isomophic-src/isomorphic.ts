@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const DEFAULT_NAME = "frogboi";
+export const DEFAULT_HAT = "" as const;
+export const DEFAULT_FROG = "Frog1AP" as const;
+
 const UploadSVGSchema = z.object({
     type: z.literal("upload-svg"),
     svg: z.string(),
@@ -58,12 +62,18 @@ const RequestFrogSchema = z.object({
     type: z.literal("request-frog"),
 });
 
+const ChangeNameSchema = z.object({
+    type: z.literal("change-name"),
+    name: z.string(),
+});
+
 // The type of messages sent from the client to the server via WebSocket
 export const FromClientSocketMessageSchema = z.union([
     UploadSVGSchema,
     RibbitSchema,
     ChangeFrogSchema,
     RequestFrogSchema,
+    ChangeNameSchema,
 ]);
 
 export type FromClientSocketMessage = z.infer<typeof FromClientSocketMessageSchema>;
@@ -79,6 +89,7 @@ const SVGUploadedSchema = z.object({
     frog: FrogSchema,
     userId: z.string(),
     svgPath: z.string(),
+    name: z.string(),
 });
 
 export type SVGUploaded = z.infer<typeof SVGUploadedSchema>;
@@ -88,6 +99,7 @@ const FrogChangedSchema = z.object({
     userId: z.string(),
     hat: HatSchema,
     frog: FrogSchema,
+    name: z.string(),
 });
 
 const GetFrogSchema = z.object({
@@ -95,6 +107,13 @@ const GetFrogSchema = z.object({
     userId: z.string(),
     frog: FrogSchema,
     hat: HatSchema,
+    name: z.string(),
+});
+
+const NameChangedSchema = z.object({
+    type: z.literal("name_changed"),
+    userId: z.string(),
+    name: z.string(),
 });
 
 // The type of messages sent from the server to the client via WebSocket
@@ -103,6 +122,7 @@ export const FromServerSocketMessageSchema = z.union([
     RibbitSentSchema,
     FrogChangedSchema,
     GetFrogSchema,
+    NameChangedSchema,
 ]);
 
 export type FromServerSocketMessage = z.infer<typeof FromServerSocketMessageSchema>;
