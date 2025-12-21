@@ -7,6 +7,7 @@ import { socketSend } from "../../services/socket.ts";
 import { app } from "../../state";
 
 const EditPencil = `/StreamlineFreehand-EditPencil.svg`;
+const NavigationPageRight = `/StreamlineFreehand-NavigationPageRight.svg`;
 
 interface UserToolbarProps {
   hat: string;
@@ -154,14 +155,14 @@ function CustomizeFrogDialog({
           onClick={() => safeSetHatIndex((v) => v - 1)}
           className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
         >
-          <img src={EditPencil} className="group-hover:text-green-300" />
+          <img src={NavigationPageRight} className="transform -scale-x-100 group-hover:text-green-300" />
         </button>
         <img src={currentHat} className="" />
         <button
           onClick={() => safeSetHatIndex((v) => v + 1)}
           className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
         >
-          <img src={EditPencil} className="group-hover:text-green-300" />
+          <img src={NavigationPageRight} className="group-hover:text-green-300" />
         </button>
       </div>
 
@@ -170,14 +171,14 @@ function CustomizeFrogDialog({
           onClick={() => safeSetFrogIndex((v) => v - 1)}
           className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
         >
-          <img src={EditPencil} className="group-hover:text-green-300" />
+          <img src={NavigationPageRight} className="transform -scale-x-100 group-hover:text-green-300" />
         </button>
         <img src={currentFrog} className="" />
         <button
           onClick={() => safeSetFrogIndex((v) => v + 1)}
           className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
         >
-          <img src={EditPencil} className="group-hover:text-green-300" />
+          <img src={NavigationPageRight} className="group-hover:text-green-300" />
         </button>
       </div>
 
