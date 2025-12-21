@@ -42,6 +42,14 @@ export default function UserToolbar({
     socketSend({ type: "change-name", name });
   };
 
+  const ribbit = () => {
+    socketSend({ type: "ribbit", name });
+  };
+
+  const uploadSvg = () => {
+    socketSend({ svg: app.copySvg(), type: "upload-svg" });
+  };
+
   return (
     <>
       <CustomizeFrogDialog
@@ -51,48 +59,71 @@ export default function UserToolbar({
         onFrogComplete={(frog: string) => setFrog(frog)}
         onHatComplete={(hat: string) => setHat(hat)}
       />
-      <menu className="flex gap-8 border-8 border-double border-green-800 p-3 bg-green-500/30 backdrop-blur-lg">
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <span className="relative size-56 border-2 rounded p-2 border-green-800 pixelate backdrop-blur-lg">
-            <img src={hat} className="absolute top-0 left-17 w-16" />
-            <img src={frog} className="" />
-          </span>
-          <input
-            name="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
-            onBlur={handleNameBlur}
-            className="text-lg text-center w-fit border-2 border-green-800 bg-white font-bold rounded pl-2"
-          />
-          <button
-            onClick={() => customizeDialogRef.current?.showModal()}
-            className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
-          >
-            <img src={EditPencil} className="group-hover:text-green-300" />
-          </button>
+      <menu className="flex flex-col xl:flex-row gap-4 xl:gap-8 border-8 border-double border-green-800 p-3 bg-green-500/30 backdrop-blur-lg">
+        <div className="flex flex-row xl:flex-col gap-4 xl:gap-2 items-center justify-between xl:justify-center">
+          <div className="flex flex-col gap-2 items-center">
+            <span className="relative size-32 xl:size-56 border-2 rounded p-2 border-green-800 pixelate backdrop-blur-lg">
+              <img src={hat} className="absolute top-0 left-8 xl:left-17 w-10 xl:w-16" />
+              <img src={frog} className="" />
+            </span>
+            <input
+              name="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.currentTarget.value)}
+              onBlur={handleNameBlur}
+              className="text-lg text-center w-fit border-2 border-green-800 bg-white font-bold rounded pl-2"
+            />
+            <button
+              onClick={() => customizeDialogRef.current?.showModal()}
+              className="border group bg-green-400 hover:bg-green-600 p-2 rounded-full"
+            >
+              <img src={EditPencil} className="group-hover:text-green-300" />
+            </button>
+          </div>
+
+          <div className="xl:hidden flex-1 h-auto border rounded bg-green-500/30">
+            <Controls />
+          </div>
         </div>
 
-        <div className="w-full max-w-1/6 h-auto border rounded bg-green-500/30">
-          <Controls />
+        <div className="hidden xl:flex flex-row gap-8 w-full">
+          <div className="w-full max-w-1/6 h-auto border rounded bg-green-500/30">
+            <Controls />
+          </div>
+          <div className="w-full h-auto border rounded bg-white">
+            <Editor />
+          </div>
         </div>
-        <div className="w-full h-auto border rounded bg-white">
+
+        <div className="xl:hidden w-full h-64 border rounded bg-white">
           <Editor />
         </div>
 
-        <div className="font-bold text-green-800 flex flex-col justify-center gap-4 w-full max-w-50 h-auto text-4xl">
+        <div className="font-bold text-green-800 flex xl:hidden flex-row justify-center gap-4 text-2xl">
           <button
-            onClick={() => {
-              socketSend({ svg: app.copySvg(), type: "upload-svg" });
-            }}
+            onClick={uploadSvg}
+            className="flex-1 bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-2"
+          >
+            Send
+          </button>
+          <button
+            onClick={ribbit}
+            className="flex-1 bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-2"
+          >
+            Ribbit
+          </button>
+        </div>
+
+        <div className="font-bold text-green-800 hidden xl:flex flex-col justify-center gap-4 w-full max-w-50 h-auto text-4xl">
+          <button
+            onClick={uploadSvg}
             className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
           >
             Send
           </button>
           <button
-            onClick={() => {
-              socketSend({ type: "ribbit", name });
-            }}
+            onClick={ribbit}
             className="w-full bg-green-400 hover:bg-green-600 hover:text-green-300 border-2 border-green-800 rounded p-4"
           >
             Ribbit
