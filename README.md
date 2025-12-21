@@ -8,7 +8,7 @@
     src="./public/FroggyHatP.png"
 />
 
-<p>Ribbing Fun with Friends</p>
+<p>Ribbiting Fun with Friends</p>
 
 </div>
 
