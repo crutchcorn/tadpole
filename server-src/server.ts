@@ -5,6 +5,7 @@ import { Server } from "partyserver";
 import type { Connection, WSMessage } from "partyserver";
 
 import { FromClientSocketMessage, FromServerSocketMessage, Frog, Hat, DEFAULT_NAME, DEFAULT_HAT, DEFAULT_FROG } from "../isomophic-src/isomorphic";
+import { sanitizeSvg } from "./svg-sanitizer";
 
 function getMessageForClient(data: FromServerSocketMessage): string {
   return JSON.stringify(data);
@@ -17,7 +18,12 @@ export class Chat extends Server {
 
     switch (data.type) {
       case "upload-svg": {
-        const svgContent = data.svg;
+        let svgContent: string;
+        try {
+          svgContent = sanitizeSvg(data.svg);
+        } catch {
+          return;
+        }
 
         const svgFileName = `drawing-${crypto.randomUUID()}.svg`;
 
